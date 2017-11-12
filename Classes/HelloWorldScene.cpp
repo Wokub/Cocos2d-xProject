@@ -28,11 +28,22 @@ bool HelloWorld::init()
     auto visibleSize = Director::getInstance()->getVisibleSize();
     Vec2 origin = Director::getInstance()->getVisibleOrigin();
 
-    mySprite = Sprite::create("Player.png");
+    auto bg = Sprite::create("images/background.jpg");
+    bg->setPosition(Vec2(origin.x + visibleSize.width / 2, origin.y + visibleSize.height / 2));
+    bg->setScale(0.55, 0.55);
+    this->addChild(bg);
 
-    mySprite->setPosition(Point((visibleSize.width/2) + origin.x, (visibleSize.height/2)+origin.y));
-
+    mySprite = Sprite::create("images/Player.png");
+    mySprite->setPosition(Point((visibleSize.width/4.5) + origin.x, (visibleSize.height/3.5)+origin.y));
+    mySprite->setScale(0.3, 0.3);
     this->addChild(mySprite);
+
+    //Audio
+    CocosDenshion::SimpleAudioEngine::getInstance()->preloadBackgroundMusic("audio/Theme.mp3");
+
+    CocosDenshion::SimpleAudioEngine::getInstance()->playBackgroundMusic("audio/Theme.mp3", true);
+
+    //Background
 
     return true;
 }
