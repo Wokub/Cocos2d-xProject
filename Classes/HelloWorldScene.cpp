@@ -15,6 +15,8 @@ static void problemLoading(const char* filename)
     printf("Depending on how you compiled you might have to add 'Resources/' in front of filenames in HelloWorldScene.cpp\n");
 }
 
+
+
 // on "init" you need to initialize your instance
 bool HelloWorld::init()
 {
@@ -33,14 +35,31 @@ bool HelloWorld::init()
     bg->setScale(0.55, 0.55);
     this->addChild(bg);
 
+    auto scoreboard = Sprite::create("images/Frame.png");
+    scoreboard->setPosition(Point((visibleSize.width/2) + origin.x, visibleSize.height));
+    scoreboard->setScale(0.75, 0.75);
+    this->addChild(scoreboard);
+
+
     mySprite = Sprite::create("images/Player.png");
-    mySprite->setPosition(Point((visibleSize.width/4.5) + origin.x, (visibleSize.height/3.5)+origin.y));
-    mySprite->setScale(0.3, 0.3);
+    mySprite->setPosition(Point((visibleSize.width/4.6) + origin.x, (visibleSize.height/4.2)+origin.y));
+    mySprite->setScale(0.34, 0.34);
     this->addChild(mySprite);
+
+    auto ground = Sprite::create("images/Ground.png");
+    ground->setPosition(Point((visibleSize.width/2) + origin.x, origin.y));
+    ground->setScale(0.25, 0.2);
+    this->addChild(ground);
+
+    auto grass = Sprite::create("images/Grass.png");
+    grass->setPosition(Point((visibleSize.width/2) + origin.x, (visibleSize.height/9) + origin.y));
+    grass->setScale(0.15, 0.1);
+    this->addChild(grass);
+
+
 
     //Audio
     CocosDenshion::SimpleAudioEngine::getInstance()->preloadBackgroundMusic("audio/Theme.mp3");
-
     CocosDenshion::SimpleAudioEngine::getInstance()->playBackgroundMusic("audio/Theme.mp3", true);
 
     //Background

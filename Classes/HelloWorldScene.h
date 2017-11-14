@@ -3,20 +3,18 @@
 
 #include "cocos2d.h"
 
-class HelloWorld : public cocos2d::Scene
-{
+class HelloWorld : public cocos2d::Scene {
 public:
-    static cocos2d::Scene* createScene();
+    static cocos2d::Scene *createScene();
 
     virtual bool init();
-    
+
     // a selector callback
-    void menuCloseCallback(cocos2d::Ref* pSender);
-    
-    // implement the "static create()" method manually
-    CREATE_FUNC(HelloWorld);
+    void menuCloseCallback(cocos2d::Ref *pSender);
 
     cocos2d::Sprite *mySprite;
+    // implement the "static create()" method manually
+    CREATE_FUNC(HelloWorld);
 };
 
 #endif // __HELLOWORLD_SCENE_H__
