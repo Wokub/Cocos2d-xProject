@@ -55,8 +55,8 @@ bool HelloWorld::init()
 
     // add a "close" icon to exit the progress. it's an autorelease object
     auto closeItem = MenuItemImage::create(
-                                           "images/Button_Jump.png",
-                                           "images/Button_Jump2.png",
+                                           "images/buttons/Button_Jump.png",
+                                           "images/buttons/Button_Jump2.png",
                                            CC_CALLBACK_1(HelloWorld::menuCloseCallback, this));
 
     if (closeItem == nullptr ||
@@ -80,49 +80,43 @@ bool HelloWorld::init()
     //////////////////////////////
     //////////////////////////////
     // 2. creating objects
-    auto bg = Sprite::create("images/background.jpg");
+    auto bg = Sprite::create("images/background/background.jpg");
     bg->setPosition(Vec2(origin.x + visibleSize.width / 2, origin.y + visibleSize.height / 2));
     bg->setScale(0.55, 0.55);
     this->addChild(bg);
 
-    auto scoreboard = Sprite::create("images/Frame.png");
+    auto scoreboard = Sprite::create("images/objects/Frame.png");
     scoreboard->setPosition(Point((visibleSize.width/2) + origin.x, visibleSize.height));
     scoreboard->setScale(0.75, 0.75);
     this->addChild(scoreboard);
 
-    auto butterfly_1 = Sprite::create("images/Butterfly_1.png");
+    auto butterfly_1 = Sprite::create("images/objects/Butterfly_1.png");
     butterfly_1->setPosition(Point((visibleSize.width/4) + origin.x, visibleSize.height/ 2));
     butterfly_1->setScale(0.75, 0.75);
     this->addChild(butterfly_1);
 
-    auto butterfly_2 = Sprite::create("images/Butterfly_2.png");
+    auto butterfly_2 = Sprite::create("images/objects/Butterfly_2.png");
     butterfly_2->setPosition(Point((visibleSize.width/2) + origin.x, visibleSize.height));
     butterfly_2->setScale(0.75, 0.75);
     this->addChild(butterfly_2);
 
-    auto butterfly_3 = Sprite::create("images/Butterfly_3.png");
+    auto butterfly_3 = Sprite::create("images/objects/Butterfly_3.png");
     butterfly_3->setPosition(Point((visibleSize.width/3) + origin.x, visibleSize.height/ 3));
     butterfly_3->setScale(0.75, 0.75);
     this->addChild(butterfly_3);
 
-    mySprite = Sprite::create("images/Player.png");
+    mySprite = Sprite::create("images/characters/Player.png");
     mySprite->setPosition(Point((visibleSize.width/4.6) + origin.x, (visibleSize.height/4.2)+origin.y));
     mySprite->setScale(0.34, 0.34);
     this->addChild(mySprite);
 
-    ground = Sprite::create("images/Ground.png");
+    ground = Sprite::create("images/background/Ground.png");
     ground->setPosition(Point((visibleSize.width/2) + origin.x, (visibleSize.height-visibleSize.height) + origin.y + 8));
     this->addChild(ground);
 
-    grass = Sprite::create("images/Grass_Small.png");
+    grass = Sprite::create("images/background/Grass_Small.png");
     grass->setPosition(Point((visibleSize.width/2) + origin.x, (visibleSize.height/9) + origin.y));
     this->addChild(grass);
-
-    auto jump_button = Sprite::create("images/Button_Jump.png");
-    jump_button->setPosition(Point((visibleSize.width/1.2) + origin.x, visibleSize.height/6 + origin.y));
-    jump_button->setScale(0.6, 0.6);
-    this->addChild(jump_button);
-
 
     //////////////////////////////
     //Ruch obiektow
