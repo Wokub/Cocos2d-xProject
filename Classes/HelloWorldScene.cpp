@@ -15,27 +15,6 @@ static void problemLoading(const char* filename)
     printf("Depending on how you compiled you might have to add 'Resources/' in front of filenames in HelloWorldScene.cpp\n");
 }
 
-bool HelloWorld::onTouchBegan(cocos2d::Touch *touch, cocos2d::Event *event)
-{
-    //cocos2d::Sprite butterfly_12;
-    auto visibleSize = Director::getInstance()->getVisibleSize();
-    Vec2 origin = Director::getInstance()->getVisibleOrigin();
-
-    CCLOG("OnTouchBegan x = %f, y = %f", touch->getLocation().x, touch->getLocation().y);
-
-    if(touch->getLocation().x > 30 and touch->getLocation().y < 40)
-    {
-        auto action = MoveTo::create(3,Point(100,300));
-        mySprite -> runAction(action);
-
-        //auto butterfly_12 = Sprite::create("images/Butterfly_1.png");
-        //butterfly_12->setPosition(Point((visibleSize.width/4) + origin.x, visibleSize.height/ 2));
-        //butterfly_12->setScale(0.75, 0.75);
-        //this->addChild(butterfly_12);
-    }
-    return true;
-
-}
 
 // on "init" you need to initialize your instance
 bool HelloWorld::init()
@@ -53,11 +32,10 @@ bool HelloWorld::init()
     // 2. add a menu item with "X" image, which is clicked to quit the program
     //    you may modify it.
 
-    // add a "close" icon to exit the progress. it's an autorelease object
+    // przycisk skoku
     auto closeItem = MenuItemImage::create(
-                                           "images/buttons/Button_Jump.png",
-                                           "images/buttons/Button_Jump2.png",
-                                           CC_CALLBACK_1(HelloWorld::menuCloseCallback, this));
+                                           "images/buttons/Button_Jump.png",// po Button_Jump2.png można dopisać, i przed nawiasem dać inne funkncjonalności
+                                           "images/buttons/Button_Jump2.png");//CC_CALLBACK_1(HelloWorld::menuCloseCallback, this));
 
     if (closeItem == nullptr ||
         closeItem->getContentSize().width <= 0 ||
@@ -67,7 +45,7 @@ bool HelloWorld::init()
     }
     else
     {
-        float x = origin.x + visibleSize.width - closeItem->getContentSize().width/2;
+        float x = origin.x + visibleSize.width/1.2;
         float y = origin.y + closeItem->getContentSize().height/2;
         closeItem->setPosition(Vec2(x,y));
     }
@@ -76,6 +54,54 @@ bool HelloWorld::init()
     auto menu = Menu::create(closeItem, NULL);
     menu->setPosition(Vec2::ZERO);
     this->addChild(menu, 1);
+
+
+    // przycisk prawy
+    auto rightItem = MenuItemImage::create(
+            "images/buttons/Button_Right.png",
+            "images/buttons/Button_Right2.png");
+
+    if (rightItem == nullptr ||
+        rightItem->getContentSize().width <= 0 ||
+        rightItem->getContentSize().height <= 0)
+    {
+        problemLoading("'Button_Right.png' and 'Button_Right2.png'");
+    }
+    else
+    {
+        float x = visibleSize.width/2.75 + origin.x;
+        float y = origin.y + rightItem->getContentSize().height/1.5;
+        rightItem->setPosition(Vec2(x,y));
+    }
+
+    // create menu, it's an autorelease object
+    auto menu_2 = Menu::create(rightItem, NULL);
+    menu_2->setPosition(Vec2::ZERO);
+    this->addChild(menu_2, 1);
+
+    // przycisk lewy
+    auto leftItem = MenuItemImage::create(
+            "images/buttons/Button_Left.png",
+            "images/buttons/Button_Left2.png");
+
+    if (leftItem == nullptr ||
+        leftItem->getContentSize().width <= 0 ||
+        leftItem->getContentSize().height <= 0)
+    {
+        problemLoading("'Button_Left.png' and 'Button_Left2.png'");
+    }
+    else
+    {
+        float x = visibleSize.width/7 + origin.x;
+        float y = origin.y + leftItem->getContentSize().height/1.5;
+        leftItem->setPosition(Vec2(x,y));
+    }
+
+    // create menu, it's an autorelease object
+    auto menu_3 = Menu::create(leftItem, NULL);
+    menu_3->setPosition(Vec2::ZERO);
+    this->addChild(menu_3, 1);
+
 
     //////////////////////////////
     //////////////////////////////
@@ -91,7 +117,7 @@ bool HelloWorld::init()
     this->addChild(scoreboard);
 
     auto butterfly_1 = Sprite::create("images/objects/Butterfly_1.png");
-    butterfly_1->setPosition(Point((visibleSize.width/4) + origin.x, visibleSize.height/ 2));
+    butterfly_1->setPosition(Point((visibleSize.width/4) + origin.x, visibleSize.height/2));
     butterfly_1->setScale(0.75, 0.75);
     this->addChild(butterfly_1);
 
@@ -101,22 +127,22 @@ bool HelloWorld::init()
     this->addChild(butterfly_2);
 
     auto butterfly_3 = Sprite::create("images/objects/Butterfly_3.png");
-    butterfly_3->setPosition(Point((visibleSize.width/3) + origin.x, visibleSize.height/ 3));
+    butterfly_3->setPosition(Point((visibleSize.width/3) + origin.x, visibleSize.height/3));
     butterfly_3->setScale(0.75, 0.75);
     this->addChild(butterfly_3);
 
     mySprite = Sprite::create("images/characters/Player.png");
-    mySprite->setPosition(Point((visibleSize.width/4.6) + origin.x, (visibleSize.height/4.2)+origin.y));
+    mySprite->setPosition(Point((visibleSize.width/4.6) + origin.x, visibleSize.height/2));
     mySprite->setScale(0.34, 0.34);
     this->addChild(mySprite);
 
-    ground = Sprite::create("images/background/Ground.png");
-    ground->setPosition(Point((visibleSize.width/2) + origin.x, (visibleSize.height-visibleSize.height) + origin.y + 8));
-    this->addChild(ground);
-
     grass = Sprite::create("images/background/Grass_Small.png");
-    grass->setPosition(Point((visibleSize.width/2) + origin.x, (visibleSize.height/9) + origin.y));
+    grass->setPosition(Point((visibleSize.width/2) + origin.x, (visibleSize.height/2.7)));
     this->addChild(grass);
+
+    ground = Sprite::create("images/background/Ground.png");
+    ground->setPosition(Point((visibleSize.width/2) + origin.x, (visibleSize.height/6)));
+    this->addChild(ground);
 
     //////////////////////////////
     //Ruch obiektow
