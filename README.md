@@ -4,7 +4,7 @@
 - Grę 2D dla dwóch graczy z użyciem biblioteki Cocos2d-x - tak, Cocos2d-x, nie Unity. Nie może być za łatwo.
 
 **2. Jakie funkcjonalności planuję:**
-- JUŻ WKRÓTCE (zmiana środowiska)
+- Gra będzie polegała na rywalizacji singleplayer lub multiplayer (z użyciem połączenia internetowego lub bluetooth). Dwóch graczy będzie próbowało strzelić sobie nawzajem bramkę, zdobywając różne dodatkowe ulepszenia. Ten, który pierwszy strzeli 5 bramek, wygra. Całość będzie używała Androida oraz smartfonów.
 
 **3. Jak chcę to zrobić:**
 - Metodą prób i błędów. Będę pisał aż rezultat spełni moje oczekiwania. Co prawda nie jest to mój pierwszy projekt gry 2D, jednak jest jeszcze dużo do zrobienia w tym temacie.
