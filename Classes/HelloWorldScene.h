@@ -12,7 +12,17 @@ public:
     // a selector callback
     void menuCloseCallback(cocos2d::Ref *pSender);
 
+    /////////////////////
+    // creating own variables
     cocos2d::Sprite *mySprite;
+    cocos2d::Sprite *ground;
+    cocos2d::Sprite *grass;
+
+    /////////////////////
+    // touch
+
+    bool onTouchBegan(cocos2d::Touch *touch, cocos2d::Event *event);
+
     // implement the "static create()" method manually
     CREATE_FUNC(HelloWorld);
 };
