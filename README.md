@@ -11,7 +11,5 @@
 
 **4. Jakich bibliotek użyję:**
 - Cocos2d-x
-- math.h
-- random
 
 ![alt text](http://blackonblackbusiness.co.za/wp-content/uploads/2015/06/header-jetBlack.jpg)
