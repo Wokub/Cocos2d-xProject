@@ -111,10 +111,10 @@ bool HelloWorld::init()
     bg->setScale(0.55, 0.55);
     this->addChild(bg);
 
-    auto scoreboard = Sprite::create("images/objects/Frame.png");
-    scoreboard->setPosition(Point((visibleSize.width/2) + origin.x, visibleSize.height));
-    scoreboard->setScale(0.75, 0.75);
-    this->addChild(scoreboard);
+    //auto scoreboard = Sprite::create("images/objects/Frame.png");
+    //scoreboard->setPosition(Point((visibleSize.width/2) + origin.x, visibleSize.height));
+    //scoreboard->setScale(0.75, 0.75);
+    //this->addChild(scoreboard);
 
     auto butterfly_1 = Sprite::create("images/objects/Butterfly_1.png");
     butterfly_1->setPosition(Point((visibleSize.width/4) + origin.x, visibleSize.height/2));
@@ -136,13 +136,13 @@ bool HelloWorld::init()
     mySprite->setScale(0.34, 0.34);
     this->addChild(mySprite);
 
-    grass = Sprite::create("images/background/Grass_Small.png");
-    grass->setPosition(Point((visibleSize.width/2) + origin.x, (visibleSize.height/2.7)));
-    this->addChild(grass);
-
-    ground = Sprite::create("images/background/Ground.png");
-    ground->setPosition(Point((visibleSize.width/2) + origin.x, (visibleSize.height/6)));
+    ground = Sprite::create("images/background/Ground.jpg");
+    ground->setPosition(Point((visibleSize.width/2) + origin.x, (visibleSize.height/3)));
     this->addChild(ground);
+
+    bridge = Sprite::create("images/background/Bridge.png");
+    bridge->setPosition(Point((visibleSize.width/2) + origin.x, (visibleSize.height/5)));
+    this->addChild(bridge);
 
     //////////////////////////////
     //Ruch obiektow

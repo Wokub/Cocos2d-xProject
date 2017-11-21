@@ -15,8 +15,8 @@ public:
     /////////////////////
     // creating own variables
     cocos2d::Sprite *mySprite;
+    cocos2d::Sprite *bridge;
     cocos2d::Sprite *ground;
-    cocos2d::Sprite *grass;
 
     /////////////////////
     // touch
