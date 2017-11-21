@@ -10,14 +10,19 @@ public:
     virtual bool init();
 
     // a selector callback
+    cocos2d::PhysicsWorld *sceneWorld;
     void menuCloseCallback(cocos2d::Ref *pSender);
-
+    void SetPhysicsWorld(cocos2d::PhysicsWorld *world){sceneWorld = world;};
     /////////////////////
     // creating own variables
-    cocos2d::Sprite *mySprite;
+
+    cocos2d::Sprite *character;
     cocos2d::Sprite *bridge;
     cocos2d::Sprite *ground;
 
+
+    // Character *character;
+    bool onContactBegin(cocos2d::PhysicsContact &contact);
     /////////////////////
     // touch
 
@@ -26,5 +31,6 @@ public:
     // implement the "static create()" method manually
     CREATE_FUNC(HelloWorld);
 };
+
 
 #endif // __HELLOWORLD_SCENE_H__

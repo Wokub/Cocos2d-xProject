@@ -1,11 +1,21 @@
 #include "HelloWorldScene.h"
 #include "SimpleAudioEngine.h"
+#include "Definitions.h"
 
 USING_NS_CC;
 
 Scene* HelloWorld::createScene()
 {
-    return HelloWorld::create();
+    auto scene = Scene::createWithPhysics();
+    scene->getPhysicsWorld()->setDebugDrawMask(PhysicsWorld::DEBUGDRAW_ALL);
+    scene->getPhysicsWorld()->setGravity(Vect(0,0));
+
+    auto layer = HelloWorld::create();
+    layer->SetPhysicsWorld(scene->getPhysicsWorld());
+
+    scene->addChild(layer);
+
+    return scene;
 }
 
 // Print useful error message instead of segfaulting when files are not there.
@@ -28,9 +38,6 @@ bool HelloWorld::init()
 
     auto visibleSize = Director::getInstance()->getVisibleSize();
     Vec2 origin = Director::getInstance()->getVisibleOrigin();
-    /////////////////////////////
-    // 2. add a menu item with "X" image, which is clicked to quit the program
-    //    you may modify it.
 
     // przycisk skoku
     auto closeItem = MenuItemImage::create(
@@ -102,14 +109,22 @@ bool HelloWorld::init()
     menu_3->setPosition(Vec2::ZERO);
     this->addChild(menu_3, 1);
 
-
-    //////////////////////////////
-    //////////////////////////////
     // 2. creating objects
     auto bg = Sprite::create("images/background/background.jpg");
     bg->setPosition(Vec2(origin.x + visibleSize.width / 2, origin.y + visibleSize.height / 2));
     bg->setScale(0.55, 0.55);
     this->addChild(bg);
+
+    auto edgeBody = PhysicsBody::createEdgeBox( visibleSize, PHYSICSBODY_MATERIAL_DEFAULT, 0.1 );
+    edgeBody->setCollisionBitmask( OBSTACLE_COLLISION_BITMASK );
+    edgeBody->setContactTestBitmask( true );
+
+    auto edgeNode = Node::create();
+    edgeNode->setPosition( Point( visibleSize.width / 2 + origin.x, visibleSize.height / 2 + origin.y ) );
+
+    edgeNode->setPhysicsBody( edgeBody );
+
+    this->addChild( edgeNode );
 
     //auto scoreboard = Sprite::create("images/objects/Frame.png");
     //scoreboard->setPosition(Point((visibleSize.width/2) + origin.x, visibleSize.height));
@@ -131,10 +146,10 @@ bool HelloWorld::init()
     butterfly_3->setScale(0.75, 0.75);
     this->addChild(butterfly_3);
 
-    mySprite = Sprite::create("images/characters/Player.png");
-    mySprite->setPosition(Point((visibleSize.width/4.6) + origin.x, visibleSize.height/2));
-    mySprite->setScale(0.34, 0.34);
-    this->addChild(mySprite);
+    character = Sprite::create("images/characters/Player.png");
+    character->setPosition(Point((visibleSize.width/4.6) + origin.x, visibleSize.height/2));
+    character->setScale(0.34, 0.34);
+    this->addChild(character);
 
     ground = Sprite::create("images/background/Ground.jpg");
     ground->setPosition(Point((visibleSize.width/2) + origin.x, (visibleSize.height/3)));
@@ -144,16 +159,11 @@ bool HelloWorld::init()
     bridge->setPosition(Point((visibleSize.width/2) + origin.x, (visibleSize.height/5)));
     this->addChild(bridge);
 
-    //////////////////////////////
     //Ruch obiektow
-
     auto rotateAction = RotateBy::create(2,118);
     auto action_2 = Sequence::create(rotateAction, MoveBy::create(5,Point(100,80)),NULL);
-
     butterfly_1->runAction(action_2);
 
-
-    //////////////////////////////
     //Audio
     CocosDenshion::SimpleAudioEngine::getInstance()->preloadBackgroundMusic("audio/Theme.mp3");
     CocosDenshion::SimpleAudioEngine::getInstance()->playBackgroundMusic("audio/Theme.mp3", true);
@@ -161,8 +171,7 @@ bool HelloWorld::init()
     return true;
 }
 
-
-void HelloWorld::menuCloseCallback(Ref* pSender)
+void HelloWorld::menuCloseCallback(Ref* pSender)//funkcja wylaczajaca
 {
     //Close the cocos2d-x game scene and quit the application
     Director::getInstance()->end();
@@ -170,11 +179,9 @@ void HelloWorld::menuCloseCallback(Ref* pSender)
     #if (CC_TARGET_PLATFORM == CC_PLATFORM_IOS)
     exit(0);
 #endif
-
-    /*To navigate back to native iOS screen(if present) without quitting the application  ,do not use Director::getInstance()->end() and exit(0) as given above,instead trigger a custom event created in RootViewController.mm as below*/
-
-    //EventCustom customEndEvent("game_scene_close_event");
-    //_eventDispatcher->dispatchEvent(&customEndEvent);
-
-
 }
+
+
+
+
+
