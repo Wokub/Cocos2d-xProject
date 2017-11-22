@@ -166,8 +166,8 @@ bool HelloWorld::init()
     butterfly_1->runAction(action_2);
 
     //Audio
-    CocosDenshion::SimpleAudioEngine::getInstance()->preloadBackgroundMusic("audio/Theme.mp3");
-    CocosDenshion::SimpleAudioEngine::getInstance()->playBackgroundMusic("audio/Theme.mp3", true);
+    CocosDenshion::SimpleAudioEngine::getInstance()->preloadBackgroundMusic("audio/Theme_alt.mp3");
+    CocosDenshion::SimpleAudioEngine::getInstance()->playBackgroundMusic("audio/Theme_alt.mp3", true);
 
     return true;
 
@@ -181,15 +181,15 @@ void HelloWorld::menuCloseCallback(Ref* pSender)//funkcja wylaczajaca
     auto action = JumpBy::create(1, Point(0,0),100,1);
     character->runAction(action);
 
-    if(character->getPositionY() > visibleSize.height)
-    {
-        auto action = MoveTo::create(1,Point(0,-300));
-        character->runAction(action);
-    }
+  //  if(character->getPositionY() > visibleSize.height)
+   // {
+    //    auto action = JumpBy::create(1, Point(0,0),-100,1);
+     //   character->runAction(action);
+   // }
 
     if(character->getPositionY() < visibleSize.height/2)
     {
-        character->setPositionY(visibleSize.height/2);
+        auto action = JumpBy::create(1, Point(0,0),0,0);
     }
 }
 
