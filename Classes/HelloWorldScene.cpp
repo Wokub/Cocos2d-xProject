@@ -41,8 +41,9 @@ bool HelloWorld::init()
 
     // przycisk skoku
     auto closeItem = MenuItemImage::create(
-                                           "images/buttons/Button_Jump.png",// po Button_Jump2.png można dopisać, i przed nawiasem dać inne funkncjonalności
-                                           "images/buttons/Button_Jump2.png");//CC_CALLBACK_1(HelloWorld::menuCloseCallback, this));
+                    "images/buttons/Button_Jump.png",// po Button_Jump2.png można dopisać, i przed nawiasem dać inne funkncjonalności
+                    "images/buttons/Button_Jump2.png",
+                    CC_CALLBACK_1(HelloWorld::menuCloseCallback, this));//CC_CALLBACK_1(HelloWorld::menuCloseCallback, this));
 
     if (closeItem == nullptr ||
         closeItem->getContentSize().width <= 0 ||
@@ -169,17 +170,29 @@ bool HelloWorld::init()
     CocosDenshion::SimpleAudioEngine::getInstance()->playBackgroundMusic("audio/Theme.mp3", true);
 
     return true;
+
 }
 
 void HelloWorld::menuCloseCallback(Ref* pSender)//funkcja wylaczajaca
 {
-    //Close the cocos2d-x game scene and quit the application
-    Director::getInstance()->end();
+    auto visibleSize = Director::getInstance()->getVisibleSize();
+    Vec2 origin = Director::getInstance()->getVisibleOrigin();
 
-    #if (CC_TARGET_PLATFORM == CC_PLATFORM_IOS)
-    exit(0);
-#endif
+    auto action = JumpBy::create(1, Point(0,0),100,1);
+    character->runAction(action);
+
+    if(character->getPositionY() > visibleSize.height)
+    {
+        auto action = MoveTo::create(1,Point(0,-300));
+        character->runAction(action);
+    }
+
+    if(character->getPositionY() < visibleSize.height/2)
+    {
+        character->setPositionY(visibleSize.height/2);
+    }
 }
+
 
 
 

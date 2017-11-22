@@ -11,6 +11,8 @@ public:
 
     // a selector callback
     cocos2d::PhysicsWorld *sceneWorld;
+    CREATE_FUNC(HelloWorld);
+
     void menuCloseCallback(cocos2d::Ref *pSender);
     void SetPhysicsWorld(cocos2d::PhysicsWorld *world){sceneWorld = world;};
     /////////////////////
@@ -29,7 +31,7 @@ public:
     bool onTouchBegan(cocos2d::Touch *touch, cocos2d::Event *event);
 
     // implement the "static create()" method manually
-    CREATE_FUNC(HelloWorld);
+
 };
 
 
