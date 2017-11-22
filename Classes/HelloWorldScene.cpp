@@ -166,8 +166,8 @@ bool HelloWorld::init()
     butterfly_1->runAction(action_2);
 
     //Audio
-    CocosDenshion::SimpleAudioEngine::getInstance()->preloadBackgroundMusic("audio/Theme_alt.mp3");
-    CocosDenshion::SimpleAudioEngine::getInstance()->playBackgroundMusic("audio/Theme_alt.mp3", true);
+    CocosDenshion::SimpleAudioEngine::getInstance()->preloadBackgroundMusic("audio/MainTheme.mp3");
+    CocosDenshion::SimpleAudioEngine::getInstance()->playBackgroundMusic("audio/MainTheme.mp3", true);
 
     return true;
 
