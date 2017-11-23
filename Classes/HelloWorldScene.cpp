@@ -40,9 +40,11 @@ bool HelloWorld::init()
 
     //Tworzenie przycisku skoku
     auto closeItem = MenuItemImage::create(
-                    "images/buttons/Button_Jump.png",// po Button_Jump2.png można dopisać, i przed nawiasem dać inne funkncjonalności
+                    "images/buttons/Button_Jump.png",
                     "images/buttons/Button_Jump2.png",
-                    CC_CALLBACK_1(HelloWorld::menuJumpCallback, this));//CC_CALLBACK_1(HelloWorld::menuCloseCallback, this));
+                    CC_CALLBACK_1(HelloWorld::menuJumpCallback, this)
+           // , CC_CALLBACK_0(HelloWorld::JumpSoundEffect, this)
+    );
 
     if (closeItem == nullptr ||
         closeItem->getContentSize().width <= 0 ||
@@ -119,25 +121,45 @@ bool HelloWorld::init()
     //Tworzenie tablicy
     auto scoreboard = Sprite::create("images/objects/Frame.png");
     scoreboard->setPosition(Point((visibleSize.width/2) + origin.x, visibleSize.height));
-    scoreboard->setScale(0.75, 0.75);
+    scoreboard->setScale(0.3, 0.3);
     this->addChild(scoreboard);
 
     //Tworzenie motyla 1
     auto butterfly_1 = Sprite::create("images/objects/Butterfly_1.png");
-    butterfly_1->setPosition(Point((visibleSize.width/4) + origin.x, visibleSize.height/2));
+    butterfly_1->setPosition(Point((visibleSize.width/3) + origin.x, visibleSize.height));
     butterfly_1->setScale(0.75, 0.75);
     this->addChild(butterfly_1);
 
     //Tworzenie motyla 2
     auto butterfly_2 = Sprite::create("images/objects/Butterfly_2.png");
     butterfly_2->setPosition(Point((visibleSize.width/2) + origin.x, visibleSize.height/1.5));
-    butterfly_2->setScale(0.75, 0.75);
+    butterfly_2->setScale(0.5, 0.5);
     this->addChild(butterfly_2);
 
-    //Tworzenie pilki
+    //Tworzenie wiatrakow
+    auto windmills = Sprite::create("images/objects/Windmills.png");
+    windmills->setPosition(Point((visibleSize.width/1.2),(visibleSize.height/2)));
+    windmills->setScale(0.5,0.5);
+    this->addChild(windmills);
 
+    auto rotatedwindmill = Sprite::create("images/objects/RotatedWindmill.png");
+    rotatedwindmill->setPosition(Point((visibleSize.width/1.5),(visibleSize.height/1.8)));
+    rotatedwindmill->setScale(0.5,0.5);
+    this->addChild(rotatedwindmill);
+
+    auto rotatedwindmill_2 = Sprite::create("images/objects/RotatedWindmill2.png");
+    rotatedwindmill_2->setPosition(Point((visibleSize.width/3),(visibleSize.height/2.2)));
+    rotatedwindmill_2->setScale(0.5,0.5);
+    this->addChild(rotatedwindmill_2);
+
+    auto windrotateAction = RepeatForever::create(RotateBy::create(2,360));
+    rotatedwindmill->runAction(windrotateAction);
+    auto windrotateAction2 = RepeatForever::create(RotateBy::create(2,360));
+    rotatedwindmill_2->runAction(windrotateAction2);
+
+    //Tworzenie pilki
     ball = Sprite::create("images/objects/Ball.png");
-    ball->setPosition(visibleSize.width/2, visibleSize.height/2.1);
+    ball->setPosition(visibleSize.width/2, visibleSize.height/2.3);
     ball->setScale(0.3,0.3);
     this->addChild(ball);
 
@@ -151,13 +173,12 @@ bool HelloWorld::init()
     }
 
     //Tworzenie obiektu do single_player
-
     enemy = Sprite::create("images/characters/SinglePlayer.png");
-    enemy->setPosition(visibleSize.width/1.2, visibleSize.height/1.3);
+    enemy->setPosition(visibleSize.width/1.3, visibleSize.height);
     enemy->setScale(0.7,0.3);
     this->addChild(enemy);
 
-    auto EnemyAnimation = RepeatForever::create(JumpBy::create(1, Point(0, 0), -150, 1));
+    auto EnemyAnimation = RepeatForever::create(JumpBy::create(2, Point(0, 0), -150, 1));
     enemy->runAction(EnemyAnimation);
 
     //Tworzenie gracza
@@ -165,6 +186,16 @@ bool HelloWorld::init()
     character->setPosition(Point((visibleSize.width/4.6) + origin.x, visibleSize.height/2));
     character->setScale(0.34, 0.34);
     this->addChild(character);
+
+    goalone = Sprite::create("images/objects/Goal.png");
+    goalone->setPosition(Point(visibleSize.width/20.3, visibleSize.height/1.7));
+    goalone->setScale(0.3, 0.4);
+    this->addChild(goalone);
+
+    goaltwo = Sprite::create("images/objects/Goal2.png");
+    goaltwo->setPosition(Point(visibleSize.width/1.05, visibleSize.height/1.7));
+    goaltwo->setScale(0.3, 0.4);
+    this->addChild(goaltwo);
 
     //Tworzenie podloza (ukrytego pod mostem)
     ground = Sprite::create("images/background/Ground.jpg");
@@ -177,13 +208,14 @@ bool HelloWorld::init()
     this->addChild(bridge);
 
     //Ruch obiektow niekontrolowanych przez uzytkownika
-    auto rotateAction = RotateBy::create(2,118);
-    auto action_2 = Sequence::create(rotateAction, MoveBy::create(5,Point(100,80)),NULL);
+    auto rotateAction = MoveBy::create(5,Point(-200,-150));
+    auto action_2 = RepeatForever::create(Sequence::create(rotateAction, MoveBy::create(5,Point(200,150)),NULL));
     butterfly_1->runAction(action_2);
 
     //Audio
-    CocosDenshion::SimpleAudioEngine::getInstance()->preloadBackgroundMusic("audio/MenuTheme.mp3");
-    CocosDenshion::SimpleAudioEngine::getInstance()->playBackgroundMusic("audio/MenuTheme.mp3", true);
+    CocosDenshion::SimpleAudioEngine::getInstance()->preloadBackgroundMusic("audio/MainTheme.mp3");
+    CocosDenshion::SimpleAudioEngine::getInstance()->playBackgroundMusic("audio/MainTheme.mp3", true);
+
 
     return true;
 }
@@ -218,12 +250,8 @@ void HelloWorld::menuLeftCallback(Ref* pSender)
 
     auto action = MoveBy::create(1,Point(-80,0));
     character->runAction(action);
-
-    if(character->getPositionX() < 0)
-    {
-        auto action = MoveBy::create(1, Point(0,0));
-    }
 }
+
 
 
 

@@ -27,7 +27,8 @@ public:
     cocos2d::Sprite *ground;
     cocos2d::Sprite *ball;
     cocos2d::Sprite *enemy;
-
+    cocos2d::Sprite *goalone;
+    cocos2d::Sprite *goaltwo;
     bool onContactBegin(cocos2d::PhysicsContact &contact);
 
     bool onTouchBegan(cocos2d::Touch *touch, cocos2d::Event *event);
