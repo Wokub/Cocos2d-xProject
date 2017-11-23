@@ -5,33 +5,35 @@
 
 class HelloWorld : public cocos2d::Scene {
 public:
+    //tworzenie sceny
     static cocos2d::Scene *createScene();
 
+    //funkcja inicjalizujaca bool
     virtual bool init();
 
-    // a selector callback
+    //tworzenie psychiki
     cocos2d::PhysicsWorld *sceneWorld;
-    CREATE_FUNC(HelloWorld);
 
-    void menuCloseCallback(cocos2d::Ref *pSender);
+
+    //tworzenie funkcji
+    void menuJumpCallback(cocos2d::Ref *pSender);
     void SetPhysicsWorld(cocos2d::PhysicsWorld *world){sceneWorld = world;};
-    /////////////////////
-    // creating own variables
+    void menuLeftCallback(cocos2d::Ref *pSender);
+    void menuRightCallback(cocos2d::Ref *pSender);
 
+    //tworzenie zmiennych
     cocos2d::Sprite *character;
     cocos2d::Sprite *bridge;
     cocos2d::Sprite *ground;
+    cocos2d::Sprite *ball;
+    cocos2d::Sprite *enemy;
 
-
-    // Character *character;
     bool onContactBegin(cocos2d::PhysicsContact &contact);
-    /////////////////////
-    // touch
 
     bool onTouchBegan(cocos2d::Touch *touch, cocos2d::Event *event);
 
-    // implement the "static create()" method manually
-
+    //tworzenie glownej funkcji
+    CREATE_FUNC(HelloWorld);
 };
 
 
