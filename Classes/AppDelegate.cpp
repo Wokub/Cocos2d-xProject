@@ -1,5 +1,7 @@
 #include "AppDelegate.h"
 #include "HelloWorldScene.h"
+#include "MenuScene.h"
+
 
 // #define USE_AUDIO_ENGINE 1
 // #define USE_SIMPLE_AUDIO_ENGINE 1
@@ -18,10 +20,17 @@ using namespace CocosDenshion;
 
 USING_NS_CC;
 
+
 static cocos2d::Size designResolutionSize = cocos2d::Size(480, 320);
 static cocos2d::Size smallResolutionSize = cocos2d::Size(480, 320);
 static cocos2d::Size mediumResolutionSize = cocos2d::Size(1024, 768);
 static cocos2d::Size largeResolutionSize = cocos2d::Size(2048, 1536);
+
+static int register_all_packages()
+{
+    return 0; //flag for packages manager
+}
+
 
 AppDelegate::AppDelegate()
 {
@@ -48,10 +57,7 @@ void AppDelegate::initGLContextAttrs()
 
 // if you want to use the package manager to install more packages,  
 // don't modify or remove this function
-static int register_all_packages()
-{
-    return 0; //flag for packages manager
-}
+
 
 bool AppDelegate::applicationDidFinishLaunching() {
     // initialize director
@@ -94,7 +100,7 @@ bool AppDelegate::applicationDidFinishLaunching() {
     register_all_packages();
 
     // create a scene. it's an autorelease object
-    auto scene = HelloWorld::createScene();
+    auto scene = MenuScene::createScene();
 
     // run
     director->runWithScene(scene);
