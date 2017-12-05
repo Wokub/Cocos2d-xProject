@@ -12,6 +12,9 @@ public:
 
     void SceneCallback(cocos2d::Ref *pSender);
 
+    void multiplayer(Ref *pSender);
+    void inform(Ref *pSender);
+
     //tworzenie glownej funkcji
     CREATE_FUNC(MenuScene);
 };

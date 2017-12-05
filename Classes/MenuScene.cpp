@@ -2,6 +2,7 @@
 #include "AppDelegate.h"
 #include "HelloWorldScene.h"
 #include "cocos2d.h"
+#include "SimpleAudioEngine.h"
 
 USING_NS_CC;
 
@@ -47,28 +48,20 @@ bool MenuScene::init()
     Size visibleSize = Director::getInstance()->getVisibleSize();
     Point origin = Director::getInstance()->getVisibleOrigin();
 
-    auto SingleplayerStart = MenuItemImage::create(
-            "images/buttons/Button_Right.png",
-            "images/buttons/Button_Right2.png",
-            CC_CALLBACK_1(MenuScene::SceneCallback, this));
+    auto bg = Sprite::create("images/background/menu_background.jpg");
+    bg->setPosition(Vec2(origin.x + visibleSize.width / 2, origin.y + visibleSize.height / 2));
+    this->addChild(bg);
 
-    if (SingleplayerStart == nullptr ||
-        SingleplayerStart->getContentSize().width <= 0 ||
-        SingleplayerStart->getContentSize().height <= 0)
-    {
-        problemLoading("'Button_Right.png' and 'Button_Right2.png'");
-    }
-    else
-    {
-        float x = visibleSize.width/2.75 + origin.x;
-        float y = origin.y + SingleplayerStart->getContentSize().height/1.5;
-        SingleplayerStart->setPosition(Vec2(x,y));
-    }
 
-    //Tworzenie "menu", tj. miejsca pod przycisk
-    auto menu_2 = Menu::create(SingleplayerStart, NULL);
-    menu_2->setPosition(Vec2::ZERO);
-    this->addChild(menu_2, 1);
+    auto menu_item_single = MenuItemFont::create("Singleplayer", CC_CALLBACK_1(MenuScene::SceneCallback, this));
+    menu_item_single->setPosition(Point(visibleSize.width/2, (visibleSize.height/4)*3));
+
+    auto *menu = Menu::create(menu_item_single, NULL);
+    menu->setPosition(Point(0,0));
+    this->addChild(menu);
+
+    CocosDenshion::SimpleAudioEngine::getInstance()->preloadBackgroundMusic("audio/MenuTheme.mp3");
+    CocosDenshion::SimpleAudioEngine::getInstance()->playBackgroundMusic("audio/MenuTheme.mp3", true);
 
     return true;
 }
