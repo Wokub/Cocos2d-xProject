@@ -119,9 +119,9 @@ bool HelloWorld::init()
     this->addChild(menu_3, 1);
 
     //Tworzenie tla
-    auto bg = Sprite::create("images/background/background.jpg");
+    auto bg = Sprite::create("images/background/Pirates_BG.jpg");
     bg->setPosition(Vec2(origin.x + visibleSize.width / 2, origin.y + visibleSize.height / 2));
-    bg->setScale(0.55, 0.55);
+    bg->setScale(0.7, 0.7);
     this->addChild(bg);
 
     //Tworzenie tablicy
@@ -129,39 +129,6 @@ bool HelloWorld::init()
     scoreboard->setPosition(Point((visibleSize.width/2) + origin.x, visibleSize.height));
     scoreboard->setScale(0.3, 0.3);
     this->addChild(scoreboard);
-
-    //Tworzenie motyla 1
-    auto butterfly_1 = Sprite::create("images/objects/Butterfly_1.png");
-    butterfly_1->setPosition(Point((visibleSize.width/3) + origin.x, visibleSize.height));
-    butterfly_1->setScale(0.75, 0.75);
-    this->addChild(butterfly_1);
-
-    //Tworzenie motyla 2
-    auto butterfly_2 = Sprite::create("images/objects/Butterfly_2.png");
-    butterfly_2->setPosition(Point((visibleSize.width/2) + origin.x, visibleSize.height/1.5));
-    butterfly_2->setScale(0.5, 0.5);
-    this->addChild(butterfly_2);
-
-    //Tworzenie wiatrakow
-    auto windmills = Sprite::create("images/objects/Windmills.png");
-    windmills->setPosition(Point((visibleSize.width/1.2),(visibleSize.height/2)));
-    windmills->setScale(0.5,0.5);
-    this->addChild(windmills);
-
-    auto rotatedwindmill = Sprite::create("images/objects/RotatedWindmill.png");
-    rotatedwindmill->setPosition(Point((visibleSize.width/1.5),(visibleSize.height/1.8)));
-    rotatedwindmill->setScale(0.5,0.5);
-    this->addChild(rotatedwindmill);
-
-    auto rotatedwindmill_2 = Sprite::create("images/objects/RotatedWindmill2.png");
-    rotatedwindmill_2->setPosition(Point((visibleSize.width/3),(visibleSize.height/2.2)));
-    rotatedwindmill_2->setScale(0.5,0.5);
-    this->addChild(rotatedwindmill_2);
-
-    auto windrotateAction = RepeatForever::create(RotateBy::create(2,360));
-    rotatedwindmill->runAction(windrotateAction);
-    auto windrotateAction2 = RepeatForever::create(RotateBy::create(2,360));
-    rotatedwindmill_2->runAction(windrotateAction2);
 
     //Tworzenie pilki
     ball = Sprite::create("images/objects/Ball.png");
@@ -212,11 +179,6 @@ bool HelloWorld::init()
     bridge = Sprite::create("images/background/Bridge.png");
     bridge->setPosition(Point((visibleSize.width/2) + origin.x, (visibleSize.height/5)));
     this->addChild(bridge);
-
-    //Ruch obiektow niekontrolowanych przez uzytkownika
-    auto rotateAction = MoveBy::create(5,Point(-200,-150));
-    auto action_2 = RepeatForever::create(Sequence::create(rotateAction, MoveBy::create(5,Point(200,150)),NULL));
-    butterfly_1->runAction(action_2);
 
     //Audio
     CocosDenshion::SimpleAudioEngine::getInstance()->preloadBackgroundMusic("audio/MainTheme.mp3");
