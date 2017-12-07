@@ -15,6 +15,8 @@ public:
     void multiplayer(Ref *pSender);
     void inform(Ref *pSender);
 
+    cocos2d::Sprite *logo;
+
     //tworzenie glownej funkcji
     CREATE_FUNC(MenuScene);
 };

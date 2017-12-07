@@ -53,12 +53,25 @@ bool MenuScene::init()
     this->addChild(bg);
 
 
+    logo = Sprite::create("images/background/Logo.png");
+    logo->setPosition(Point(visibleSize.width*1.5, (visibleSize.height/4)*3.5));
+    this->addChild(logo);
+
+    auto action = MoveTo::create(1,Point(visibleSize.width/2, (visibleSize.height/4)*3.5));
+    logo->runAction(EaseElasticIn::create(action));
+
     auto menu_item_single = MenuItemFont::create("Singleplayer", CC_CALLBACK_1(MenuScene::SceneCallback, this));
-    menu_item_single->setPosition(Point(visibleSize.width/2, (visibleSize.height/4)*3));
+    menu_item_single->setPosition(Point(visibleSize.width/2, (visibleSize.height/4)*2.5));
+    auto menu_item_second = MenuItemFont::create("Multiplayer", CC_CALLBACK_1(MenuScene::SceneCallback, this));
+    menu_item_second->setPosition(Point(visibleSize.width/2, (visibleSize.height/4)*1.5));
 
     auto *menu = Menu::create(menu_item_single, NULL);
     menu->setPosition(Point(0,0));
     this->addChild(menu);
+
+    auto *menu_2 = Menu::create(menu_item_second, NULL);
+    menu_2->setPosition(Point(0,0));
+    this->addChild(menu_2);
 
     CocosDenshion::SimpleAudioEngine::getInstance()->preloadBackgroundMusic("audio/MenuTheme.mp3");
     CocosDenshion::SimpleAudioEngine::getInstance()->playBackgroundMusic("audio/MenuTheme.mp3", true);
