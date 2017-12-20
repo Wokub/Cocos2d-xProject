@@ -9,7 +9,8 @@ USING_NS_CC;
 Scene* HelloWorld::createScene()
 {
     auto scene = Scene::createWithPhysics();
-    scene->getPhysicsWorld()->setDebugDrawMask(PhysicsWorld::DEBUGDRAW_ALL);
+    scene->getPhysicsWorld()->setDebugDrawMask(PhysicsWorld::DEBUGDRAW_ALL);//wyrysowanie, daj jako komentarz jesli chcesz usunac czerwona otoczke
+
     scene->getPhysicsWorld()->setGravity(Vect(0,0));
 
     auto layer = HelloWorld::create();
@@ -43,6 +44,14 @@ bool HelloWorld::init()
 
     auto visibleSize = Director::getInstance()->getVisibleSize();
     Vec2 origin = Director::getInstance()->getVisibleOrigin();
+
+    auto edgeBody = PhysicsBody::createEdgeBox(visibleSize,PHYSICSBODY_MATERIAL_DEFAULT, 3);
+
+    auto edgeNode = Node::create();
+    edgeNode->setPosition(Point(visibleSize.width/2 + origin.x , visibleSize.height/2 + origin.y));
+    edgeNode->setPhysicsBody(edgeBody);
+
+    this->addChild(edgeNode);
 
     //Tworzenie przycisku skoku
     auto closeItem = MenuItemImage::create(
@@ -134,6 +143,8 @@ bool HelloWorld::init()
     ball = Sprite::create("images/objects/Ball.png");
     ball->setPosition(visibleSize.width/2, visibleSize.height/2.3);
     ball->setScale(0.3,0.3);
+    auto ballBody = PhysicsBody::createCircle(ball->getContentSize().width/2, PhysicsMaterial(0,1,0));
+    ball->setPhysicsBody(ballBody);
     this->addChild(ball);
 
     auto ballStartingAnimation = JumpBy::create(1, Point(0,0),50,1);
@@ -149,6 +160,9 @@ bool HelloWorld::init()
     enemy = Sprite::create("images/characters/SinglePlayer.png");
     enemy->setPosition(visibleSize.width/1.3, visibleSize.height);
     enemy->setScale(0.7,0.3);
+    auto enemyBody = PhysicsBody::createBox(enemy->getContentSize(), PhysicsMaterial(0,1,0));
+    enemyBody->setDynamic(false);
+    enemy->setPhysicsBody(enemyBody);
     this->addChild(enemy);
 
     auto EnemyAnimation = RepeatForever::create(JumpBy::create(2, Point(0, 0), -150, 1));
@@ -156,28 +170,37 @@ bool HelloWorld::init()
 
     //Tworzenie gracza
     character = Sprite::create("images/characters/Player.png");
-    character->setPosition(Point((visibleSize.width/4.6) + origin.x, visibleSize.height/2));
+    character->setPosition(Point((visibleSize.width/4.4) + origin.x, visibleSize.height/2));
+    auto characterBody = PhysicsBody::createBox(character->getContentSize(), PhysicsMaterial(0,1,0));
+    characterBody->setDynamic(false);
     character->setScale(0.34, 0.34);
+    character->setPhysicsBody(characterBody);
+    characterBody->setDynamic(false);
     this->addChild(character);
 
     goalone = Sprite::create("images/objects/Goal.png");
     goalone->setPosition(Point(visibleSize.width/20.3, visibleSize.height/1.7));
     goalone->setScale(0.3, 0.4);
+    auto goaloneBody = PhysicsBody::createBox(goalone->getContentSize(), PhysicsMaterial(0,1,0));
+    goaloneBody->setDynamic(false);
+    goalone->setPhysicsBody(goaloneBody);
     this->addChild(goalone);
 
     goaltwo = Sprite::create("images/objects/Goal2.png");
     goaltwo->setPosition(Point(visibleSize.width/1.05, visibleSize.height/1.7));
     goaltwo->setScale(0.3, 0.4);
+    auto goaltwoBody = PhysicsBody::createBox(goaltwo->getContentSize(), PhysicsMaterial(0,1,0));
+    goaltwoBody->setDynamic(false);
+    goaltwo->setPhysicsBody(goaltwoBody);
     this->addChild(goaltwo);
 
-    //Tworzenie podloza (ukrytego pod mostem)
-    ground = Sprite::create("images/background/Ground.jpg");
-    ground->setPosition(Point((visibleSize.width/2) + origin.x, (visibleSize.height/3)));
-    this->addChild(ground);
 
     //Tworzenie mostu
     bridge = Sprite::create("images/background/Bridge.png");
     bridge->setPosition(Point((visibleSize.width/2) + origin.x, (visibleSize.height/5)));
+    auto bridgeBody = PhysicsBody::createBox(bridge->getContentSize(), PhysicsMaterial(0,1,0));//mozesz dac enemy by sprawdzic fizyke
+    bridgeBody->setDynamic(false);
+    bridge->setPhysicsBody(bridgeBody);
     this->addChild(bridge);
 
     //Audio
@@ -205,10 +228,10 @@ void HelloWorld::menuRightCallback(Ref* pSender)
     auto action = MoveBy::create(1,Point(80,0));
     character->runAction(action);
 
-    if(character->getPositionX() > visibleSize.width)
-    {
+   if(character->getPositionX() > visibleSize.width)
+   {
     character->setPositionX(visibleSize.width - 25);
-    }
+   }
 }
 
 void HelloWorld::menuLeftCallback(Ref* pSender)

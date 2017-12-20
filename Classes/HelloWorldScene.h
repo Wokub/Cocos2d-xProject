@@ -12,12 +12,12 @@ public:
     virtual bool init();
 
     //tworzenie psychiki
-    cocos2d::PhysicsWorld *sceneWorld;
+    //cocos2d::PhysicsWorld *sceneWorld;
 
 
     //tworzenie funkcji
     void menuJumpCallback(cocos2d::Ref *pSender);
-    void SetPhysicsWorld(cocos2d::PhysicsWorld *world){sceneWorld = world;};
+    //void SetPhysicsWorld(cocos2d::PhysicsWorld *world){sceneWorld = world;};
     void menuLeftCallback(cocos2d::Ref *pSender);
     void menuRightCallback(cocos2d::Ref *pSender);
 
@@ -35,6 +35,13 @@ public:
 
     //tworzenie glownej funkcji
     CREATE_FUNC(HelloWorld);
+private:
+    cocos2d::PhysicsWorld *sceneWorld;
+
+    void SetPhysicsWorld (cocos2d::PhysicsWorld *world)
+    {
+        sceneWorld = world;
+    }
 };
 
 
