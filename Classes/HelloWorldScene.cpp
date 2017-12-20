@@ -9,9 +9,9 @@ USING_NS_CC;
 Scene* HelloWorld::createScene()
 {
     auto scene = Scene::createWithPhysics();
-    scene->getPhysicsWorld()->setDebugDrawMask(PhysicsWorld::DEBUGDRAW_ALL);//wyrysowanie, daj jako komentarz jesli chcesz usunac czerwona otoczke
+    //scene->getPhysicsWorld()->setDebugDrawMask(PhysicsWorld::DEBUGDRAW_ALL);//wyrysowanie, daj jako komentarz jesli chcesz usunac czerwona otoczke
 
-    scene->getPhysicsWorld()->setGravity(Vect(0,0));//Vect(20,20) np.
+    scene->getPhysicsWorld()->setGravity(Vect(1,1));//Vect(20,20) np., daj (0,0) zeby wylaczyc latanie do gory pilki
 
     auto layer = HelloWorld::create();
     layer->SetPhysicsWorld(scene->getPhysicsWorld());
@@ -134,6 +134,15 @@ bool HelloWorld::init()
     bg->setScale(0.7, 0.7);
     this->addChild(bg);
 
+    auto water = Sprite::create("images/objects/Water.png");
+    water->setPosition(Vec2(origin.x + visibleSize.width / 2, (visibleSize.height/5)-22));
+    water->setScale(1 , 0.2);
+    this->addChild(water);
+    auto waterAnim = RepeatForever::create(Sequence::create(MoveTo::create(2, Point(origin.x + visibleSize.width/2 + 10, (visibleSize.height/5) - 22)),
+                                      MoveTo::create(3, Point(origin.x + visibleSize.width/2 - 10, (visibleSize.height/5) - 22)), NULL));//missing sentinel
+
+    water->runAction(waterAnim);
+
     //Tworzenie tablicy
     auto scoreboard = Sprite::create("images/objects/Frame.png");
     scoreboard->setPosition(Point((visibleSize.width/2) + origin.x, visibleSize.height));
@@ -146,16 +155,19 @@ bool HelloWorld::init()
     ball->setScale(0.3,0.3);
     auto ballBody = PhysicsBody::createCircle(ball->getContentSize().width/2, PhysicsMaterial(0,1,0));
     ball->setPhysicsBody(ballBody);
+    ballBody->setCollisionBitmask(2);
+    ballBody->setContactTestBitmask(true);
+
     this->addChild(ball);
 
     auto ballStartingAnimation = JumpBy::create(1, Point(0,0),50,1);
     ball->runAction(ballStartingAnimation);
 
-    //if(ball->getPositionY() < visibleSize.height/2)
-    //{
-    //    auto ballStartingAnimation = JumpBy::create(1, Point(0,0),0,0);
-    //    ball->runAction(ballStartingAnimation);
-    //}
+    if(ball->getPosition().y < visibleSize.width/2 )
+    {
+        auto ballAnim = RepeatForever::create(RotateBy::create(1,90));
+        ball->runAction(ballAnim);
+    }
 
     //Tworzenie obiektu do single_player
     enemy = Sprite::create("images/characters/SinglePlayer.png");
@@ -177,6 +189,8 @@ bool HelloWorld::init()
     character->setScale(0.34, 0.34);
     character->setPhysicsBody(characterBody);
     characterBody->setDynamic(false);
+    characterBody->setCollisionBitmask(1);
+    characterBody->setContactTestBitmask(true);
     this->addChild(character);
 
     goalone = Sprite::create("images/objects/Goal.png");
@@ -198,7 +212,7 @@ bool HelloWorld::init()
 
     //Tworzenie mostu
     bridge = Sprite::create("images/background/Bridge.png");
-    bridge->setPosition(Point((visibleSize.width/2) + origin.x, (visibleSize.height/5)));
+    bridge->setPosition(Point((visibleSize.width/2) + origin.x, (visibleSize.height/5.1)));
     auto bridgeBody = PhysicsBody::createBox(bridge->getContentSize(), PhysicsMaterial(0,1,0));//mozesz dac enemy by sprawdzic fizyke
     bridgeBody->setDynamic(false);
     bridge->setPhysicsBody(bridgeBody);
@@ -208,6 +222,9 @@ bool HelloWorld::init()
     CocosDenshion::SimpleAudioEngine::getInstance()->preloadBackgroundMusic("audio/MainTheme.mp3");
     CocosDenshion::SimpleAudioEngine::getInstance()->playBackgroundMusic("audio/MainTheme.mp3", true);
 
+    auto contactListener = EventListenerPhysicsContact::create();
+    contactListener->onContactBegin = CC_CALLBACK_1(HelloWorld::onContactBegin, this);
+    this->getEventDispatcher()->addEventListenerWithSceneGraphPriority(contactListener, this);
 
     return true;
 }
@@ -245,6 +262,19 @@ void HelloWorld::menuLeftCallback(Ref* pSender)
 }
 
 
+bool HelloWorld::onContactBegin(cocos2d::PhysicsContact &contact)
+{
+    PhysicsBody *a = contact.getShapeA()->getBody();
+    PhysicsBody *b = contact.getShapeB()->getBody();
+
+    // check if the bodies have collided
+    if ( ( 1 == a->getCollisionBitmask() && 2 == b->getCollisionBitmask() ) || ( 2 == a->getCollisionBitmask() && 1 == b->getCollisionBitmask() ) )
+    {
+        CCLOG( "COLLISION HAS OCCURED" );
+    }
+
+    return true;
+}
 
 
 
