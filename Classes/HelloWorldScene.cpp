@@ -11,7 +11,7 @@ Scene* HelloWorld::createScene()
     auto scene = Scene::createWithPhysics();
     scene->getPhysicsWorld()->setDebugDrawMask(PhysicsWorld::DEBUGDRAW_ALL);//wyrysowanie, daj jako komentarz jesli chcesz usunac czerwona otoczke
 
-    scene->getPhysicsWorld()->setGravity(Vect(0,0));
+    scene->getPhysicsWorld()->setGravity(Vect(0,0));//Vect(20,20) np.
 
     auto layer = HelloWorld::create();
     layer->SetPhysicsWorld(scene->getPhysicsWorld());
@@ -71,6 +71,7 @@ bool HelloWorld::init()
     {
         float x = origin.x + visibleSize.width/1.2;
         float y = origin.y + closeItem->getContentSize().height/2;
+        //moze dodaj grawitacje zalezna od przycisku?
         closeItem->setPosition(Vec2(x,y));
     }
 
@@ -150,11 +151,11 @@ bool HelloWorld::init()
     auto ballStartingAnimation = JumpBy::create(1, Point(0,0),50,1);
     ball->runAction(ballStartingAnimation);
 
-    if(ball->getPositionY() < visibleSize.height/2)
-    {
-        auto ballStartingAnimation = JumpBy::create(1, Point(0,0),0,0);
-        ball->runAction(ballStartingAnimation);
-    }
+    //if(ball->getPositionY() < visibleSize.height/2)
+    //{
+    //    auto ballStartingAnimation = JumpBy::create(1, Point(0,0),0,0);
+    //    ball->runAction(ballStartingAnimation);
+    //}
 
     //Tworzenie obiektu do single_player
     enemy = Sprite::create("images/characters/SinglePlayer.png");
