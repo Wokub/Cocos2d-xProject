@@ -11,7 +11,7 @@ Scene* HelloWorld::createScene()
     auto scene = Scene::createWithPhysics();
     //scene->getPhysicsWorld()->setDebugDrawMask(PhysicsWorld::DEBUGDRAW_ALL);//wyrysowanie, daj jako komentarz jesli chcesz usunac czerwona otoczke
 
-    scene->getPhysicsWorld()->setGravity(Vect(1,1));//Vect(20,20) np., daj (0,0) zeby wylaczyc latanie do gory pilki
+    scene->getPhysicsWorld()->setGravity(Vect(0,0));//Vect(20,20) np., daj (0,0) zeby wylaczyc latanie do gory pilki
 
     auto layer = HelloWorld::create();
     layer->SetPhysicsWorld(scene->getPhysicsWorld());
@@ -176,6 +176,8 @@ bool HelloWorld::init()
     auto enemyBody = PhysicsBody::createBox(enemy->getContentSize(), PhysicsMaterial(0,1,0));
     enemyBody->setDynamic(false);
     enemy->setPhysicsBody(enemyBody);
+    enemyBody->setCollisionBitmask(3);
+    enemyBody->setContactTestBitmask(true);
     this->addChild(enemy);
 
     auto EnemyAnimation = RepeatForever::create(JumpBy::create(2, Point(0, 0), -150, 1));
@@ -211,67 +213,98 @@ bool HelloWorld::init()
 
 
     //Tworzenie mostu
-    bridge = Sprite::create("images/background/Bridge.png");
+    bridge = Sprite::create("images/background/Bridge.png");//Ładowanie grafiki
     bridge->setPosition(Point((visibleSize.width/2) + origin.x, (visibleSize.height/5.1)));
     auto bridgeBody = PhysicsBody::createBox(bridge->getContentSize(), PhysicsMaterial(0,1,0));//mozesz dac enemy by sprawdzic fizyke
     bridgeBody->setDynamic(false);
     bridge->setPhysicsBody(bridgeBody);
     this->addChild(bridge);
 
-    //Audio
+    //Wywołanie efektów audio
     CocosDenshion::SimpleAudioEngine::getInstance()->preloadBackgroundMusic("audio/MainTheme.mp3");
     CocosDenshion::SimpleAudioEngine::getInstance()->playBackgroundMusic("audio/MainTheme.mp3", true);
 
+    //Zmienne odpowiedzialne za sprawdzanie czy nastąpił kontakt, tj. kolizja
+    //Kreator
     auto contactListener = EventListenerPhysicsContact::create();
+    //Przypisanie elementu funkcji
     contactListener->onContactBegin = CC_CALLBACK_1(HelloWorld::onContactBegin, this);
+    //Wywołanie
     this->getEventDispatcher()->addEventListenerWithSceneGraphPriority(contactListener, this);
 
     return true;
 }
 
+//Funkcja wprawiająca postać w skok po wciśnięciu przycisku skoku
 void HelloWorld::menuJumpCallback(Ref* pSender)
 {
+    //Zmienne zawierające widoczny rozmiar ekranu oraz "pochodzenie" wywołane lokalnie
     auto visibleSize = Director::getInstance()->getVisibleSize();
     Vec2 origin = Director::getInstance()->getVisibleOrigin();
 
-    auto action = JumpBy::create(1, Point(0,0),100,1);
-    character->runAction(action);
+    auto action = JumpBy::create(1, Point(0,0),100,1);//Akcja odpowiedzialna za skok
+    character->runAction(action);//Wywołanie akcji
 }
 
+//Funkcja wprawiająca postać w ruch po wciśnięciu prawego przycisku
 void HelloWorld::menuRightCallback(Ref* pSender)
 {
+    //Zmienne zawierające widoczny rozmiar ekranu oraz "pochodzenie" wywołane lokalnie
     auto visibleSize = Director::getInstance()->getVisibleSize();
     Vec2 origin = Director::getInstance()->getVisibleOrigin();
 
-    auto action = MoveBy::create(1,Point(80,0));
-    character->runAction(action);
+    auto action = MoveBy::create(1,Point(80,0));//Akcja odpowiedzialna za ruch w prawo
+    character->runAction(action);//Wywołanie akcji
 
+    //Tymczasowy warunek sprawiający, że odległość na jaką może iść postać w prawo jest ograniczona
    if(character->getPositionX() > visibleSize.width)
    {
     character->setPositionX(visibleSize.width - 25);
    }
 }
 
+//Funkcja wprawiająca postać w ruch po wciśnięciu lewego przycisku
 void HelloWorld::menuLeftCallback(Ref* pSender)
 {
+    //Zmienne zawierające widoczny rozmiar ekranu oraz "pochodzenie" wywołane lokalnie
     auto visibleSize = Director::getInstance()->getVisibleSize();
     Vec2 origin = Director::getInstance()->getVisibleOrigin();
 
-    auto action = MoveBy::create(1,Point(-80,0));
-    character->runAction(action);
+    auto action = MoveBy::create(1,Point(-80,0));//Akcja odpowiedzialna za ruch w lewo
+    character->runAction(action);//Wywołanie akcji
 }
 
-
+//Funkcja zawierająca kolizję
 bool HelloWorld::onContactBegin(cocos2d::PhysicsContact &contact)
 {
+    //Zmienne zawierające widoczny rozmiar ekranu oraz "pochodzenie" wywołane lokalnie
+    auto visibleSize = Director::getInstance()->getVisibleSize();
+    Vec2 origin = Director::getInstance()->getVisibleOrigin();
+
+    //Tworzenie ciał fizycznych, zawierających kształt obiektu
     PhysicsBody *a = contact.getShapeA()->getBody();
     PhysicsBody *b = contact.getShapeB()->getBody();
+    PhysicsBody *c = contact.getShapeA()->getBody();
 
-    // check if the bodies have collided
-    if ( ( 1 == a->getCollisionBitmask() && 2 == b->getCollisionBitmask() ) || ( 2 == a->getCollisionBitmask() && 1 == b->getCollisionBitmask() ) )
+    //Warunek na kolizję piłki i pierwszego gracza
+    if ( ( 1 == a->getCollisionBitmask() && 2 == b->getCollisionBitmask() )
+         || ( 2 == a->getCollisionBitmask() && 1 == b->getCollisionBitmask() ) )
     {
-        CCLOG( "COLLISION HAS OCCURED" );
+        auto ballStartingAnimation = JumpBy::create(1, Point(150, 0), 50, 3);//Tworzenie zmiennej zawierającej animację skoku piłki
+        ball->runAction(ballStartingAnimation);//Wywołanie animacji
     }
+
+    //Warunek na kolizję piłki i przeciwnika, możesz spróbować z pierwszym warunkiem if-a
+    if((ball->getPositionX() > visibleSize.height/2.3) and ( 3 == c->getCollisionBitmask() && 2 == b->getCollisionBitmask() )
+       || ( 2 == c->getCollisionBitmask() && 3 == b->getCollisionBitmask() ) )
+    {
+        auto ballStartingAnimation = JumpTo::create(1, Point(ball->getPositionX() - 150, visibleSize.height/2.3 ),
+                                                    50, 3);//Tworzenie skoku
+        ball->runAction(ballStartingAnimation);//Wywołanie animacji
+    }
+
+    /////////
+    //Dodaj warunek sprawiający, że piłka nie może spać poniżej mostu
 
     return true;
 }
