@@ -286,8 +286,9 @@ bool HelloWorld::onContactBegin(cocos2d::PhysicsContact &contact)
     PhysicsBody *b = contact.getShapeB()->getBody();
     PhysicsBody *c = contact.getShapeA()->getBody();
 
-    //Warunek na kolizję piłki i pierwszego gracza
-    if ( ( 1 == a->getCollisionBitmask() && 2 == b->getCollisionBitmask() )
+    //Warunek na kolizję piłki i pierwszego gracza, możliwe, że będzie trzeba usunąć
+    //(ball->getPositionX() > visibleSize.height/2.3)
+    if ((ball->getPositionX() > visibleSize.height/2.3) and ( 1 == a->getCollisionBitmask() && 2 == b->getCollisionBitmask() )
          || ( 2 == a->getCollisionBitmask() && 1 == b->getCollisionBitmask() ) )
     {
         auto ballStartingAnimation = JumpBy::create(1, Point(150, 0), 50, 3);//Tworzenie zmiennej zawierającej animację skoku piłki
@@ -298,8 +299,10 @@ bool HelloWorld::onContactBegin(cocos2d::PhysicsContact &contact)
     if((ball->getPositionX() > visibleSize.height/2.3) and ( 3 == c->getCollisionBitmask() && 2 == b->getCollisionBitmask() )
        || ( 2 == c->getCollisionBitmask() && 3 == b->getCollisionBitmask() ) )
     {
-        auto ballStartingAnimation = JumpTo::create(1, Point(ball->getPositionX() - 150, visibleSize.height/2.3 ),
-                                                    50, 3);//Tworzenie skoku
+        auto ballStartingAnimation = JumpTo::create(1, Point(ball->getPositionX() - 150, visibleSize.height/2.3 - 20 ),
+                                                    50, 3);//Tworzenie skoku, spróbuj zmanipulować
+        // to visibleSize - 20. Liczba ustala w którym miejscu ma się odnowić piłka, możliwe,
+        //że zastąpi nam to warunek na przenikanie piłki przez most
         ball->runAction(ballStartingAnimation);//Wywołanie animacji
     }
 
