@@ -9,7 +9,8 @@ USING_NS_CC;
 Scene* HelloWorld::createScene()
 {
     auto scene = Scene::createWithPhysics();
-    //scene->getPhysicsWorld()->setDebugDrawMask(PhysicsWorld::DEBUGDRAW_ALL);//wyrysowanie, daj jako komentarz jesli chcesz usunac czerwona otoczke
+    //Poniższą linijkę można wyłączyć dodając ją jako komentarz. Jest ona odpowiedzialna za wyrysowanie kolizji
+    scene->getPhysicsWorld()->setDebugDrawMask(PhysicsWorld::DEBUGDRAW_ALL);//wyrysowanie, daj jako komentarz jesli chcesz usunac czerwona otoczke
 
     scene->getPhysicsWorld()->setGravity(Vect(0,0));//Vect(20,20) np., daj (0,0) zeby wylaczyc latanie do gory pilki
 
@@ -143,11 +144,14 @@ bool HelloWorld::init()
 
     water->runAction(waterAnim);
 
-    //Tworzenie tablicy
+
+    //secondScoreLabel->setPosition(visibleSize.width/1.6,visibleSize.height/1.2);
+    //Tworzenie tablicy wyników
     auto scoreboard = Sprite::create("images/objects/Frame.png");
     scoreboard->setPosition(Point((visibleSize.width/2) + origin.x, visibleSize.height));
     scoreboard->setScale(0.3, 0.3);
     this->addChild(scoreboard);
+
 
     //Tworzenie pilki
     ball = Sprite::create("images/objects/Ball.png");
@@ -201,6 +205,8 @@ bool HelloWorld::init()
     auto goaloneBody = PhysicsBody::createBox(goalone->getContentSize(), PhysicsMaterial(0,1,0));
     goaloneBody->setDynamic(false);
     goalone->setPhysicsBody(goaloneBody);
+    goaloneBody->setCollisionBitmask(4);
+    goaloneBody->setContactTestBitmask(true);
     this->addChild(goalone);
 
     goaltwo = Sprite::create("images/objects/Goal2.png");
@@ -209,6 +215,8 @@ bool HelloWorld::init()
     auto goaltwoBody = PhysicsBody::createBox(goaltwo->getContentSize(), PhysicsMaterial(0,1,0));
     goaltwoBody->setDynamic(false);
     goaltwo->setPhysicsBody(goaltwoBody);
+    goaltwoBody->setCollisionBitmask(5);
+    goaltwoBody->setContactTestBitmask(true);
     this->addChild(goaltwo);
 
 
@@ -285,26 +293,60 @@ bool HelloWorld::onContactBegin(cocos2d::PhysicsContact &contact)
     PhysicsBody *a = contact.getShapeA()->getBody();
     PhysicsBody *b = contact.getShapeB()->getBody();
     PhysicsBody *c = contact.getShapeA()->getBody();
+    PhysicsBody *d = contact.getShapeA()->getBody();
+    PhysicsBody *e = contact.getShapeA()->getBody();
+
+
+    int firstplayerscore = 0;
+    int secondplayerscore = 0;
 
     //Warunek na kolizję piłki i pierwszego gracza, możliwe, że będzie trzeba usunąć
     //(ball->getPositionX() > visibleSize.height/2.3)
     if ((ball->getPositionX() > visibleSize.height/2.3) and ( 1 == a->getCollisionBitmask() && 2 == b->getCollisionBitmask() )
          || ( 2 == a->getCollisionBitmask() && 1 == b->getCollisionBitmask() ) )
     {
+        int *firstpscore = &firstplayerscore;
         auto ballStartingAnimation = JumpBy::create(1, Point(150, 0), 50, 3);//Tworzenie zmiennej zawierającej animację skoku piłki
         ball->runAction(ballStartingAnimation);//Wywołanie animacji
     }
+
 
     //Warunek na kolizję piłki i przeciwnika, możesz spróbować z pierwszym warunkiem if-a
     if((ball->getPositionX() > visibleSize.height/2.3) and ( 3 == c->getCollisionBitmask() && 2 == b->getCollisionBitmask() )
        || ( 2 == c->getCollisionBitmask() && 3 == b->getCollisionBitmask() ) )
     {
-        auto ballStartingAnimation = JumpTo::create(1, Point(ball->getPositionX() - 150, visibleSize.height/2.3 - 20 ),
+        auto ballStartingAnimation = JumpTo::create(2, Point(-450, visibleSize.height/2.3 - 20 ),
                                                     50, 3);//Tworzenie skoku, spróbuj zmanipulować
         // to visibleSize - 20. Liczba ustala w którym miejscu ma się odnowić piłka, możliwe,
         //że zastąpi nam to warunek na przenikanie piłki przez most
         ball->runAction(ballStartingAnimation);//Wywołanie animacji
     }
+
+    if((ball->getPositionX() > visibleSize.height/2.3) and ( 4 == c->getCollisionBitmask() && 2 == b->getCollisionBitmask() )
+       || ( 2 == c->getCollisionBitmask() && 4 == b->getCollisionBitmask() ) )
+    {
+        ball->setPosition(visibleSize.width/2, visibleSize.height/2.3);
+        secondplayerscore += 1;
+    }
+
+    if((ball->getPositionX() > visibleSize.height/2.3) and ( 5 == c->getCollisionBitmask() && 2 == b->getCollisionBitmask() )
+       || ( 2 == c->getCollisionBitmask() && 5 == b->getCollisionBitmask() ) )
+    {
+        ball->setPosition(visibleSize.width/2, visibleSize.height/2.3);
+        secondplayerscore += 1;
+    }
+
+    __String *firstscore = __String::createWithFormat("%i", firstplayerscore);
+    auto firstScoreLabel = Label::createWithTTF(firstscore->getCString(), "fonts/arial.ttf", 32.0f);
+    firstScoreLabel->setColor(Color3B::WHITE);
+    firstScoreLabel->setPosition(visibleSize.width/2.65,visibleSize.height/1.05);
+    this->addChild(firstScoreLabel, 10000);
+
+    __String *secondscore = __String::createWithFormat("%i", secondplayerscore);
+    auto secondScoreLabel = Label::createWithTTF(secondscore->getCString(), "fonts/arial.ttf", 32.0f);
+    secondScoreLabel->setColor(Color3B::WHITE);
+    secondScoreLabel->setPosition(visibleSize.width/1.65,visibleSize.height/1.05);
+    this->addChild(secondScoreLabel, 10000);
 
     /////////
     //Dodaj warunek sprawiający, że piłka nie może spać poniżej mostu
