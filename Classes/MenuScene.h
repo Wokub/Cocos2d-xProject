@@ -11,6 +11,7 @@ public:
     virtual bool init();
 
     void SceneCallback(cocos2d::Ref *pSender);
+    void SceneCallbackTwo(cocos2d::Ref *pSender);
 
     void multiplayer(Ref *pSender);
     void inform(Ref *pSender);

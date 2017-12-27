@@ -200,7 +200,7 @@ bool HelloWorld::init()
     this->addChild(character);
 
     goalone = Sprite::create("images/objects/Goal.png");
-    goalone->setPosition(Point(visibleSize.width/20.3, visibleSize.height/1.7));
+    goalone->setPosition(Point(visibleSize.width/20.3, visibleSize.height/1.55));
     goalone->setScale(0.3, 0.4);
     auto goaloneBody = PhysicsBody::createBox(goalone->getContentSize(), PhysicsMaterial(0,1,0));
     goaloneBody->setDynamic(false);
@@ -210,7 +210,7 @@ bool HelloWorld::init()
     this->addChild(goalone);
 
     goaltwo = Sprite::create("images/objects/Goal2.png");
-    goaltwo->setPosition(Point(visibleSize.width/1.05, visibleSize.height/1.7));
+    goaltwo->setPosition(Point(visibleSize.width/1.05, visibleSize.height/1.55));
     goaltwo->setScale(0.3, 0.4);
     auto goaltwoBody = PhysicsBody::createBox(goaltwo->getContentSize(), PhysicsMaterial(0,1,0));
     goaltwoBody->setDynamic(false);
