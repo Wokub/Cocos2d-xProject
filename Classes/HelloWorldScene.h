@@ -11,10 +11,6 @@ public:
     //funkcja inicjalizujaca bool
     virtual bool init();
 
-    //tworzenie psychiki
-    //cocos2d::PhysicsWorld *sceneWorld;
-
-
     //tworzenie funkcji
     void menuJumpCallback(cocos2d::Ref *pSender);
     //void SetPhysicsWorld(cocos2d::PhysicsWorld *world){sceneWorld = world;};

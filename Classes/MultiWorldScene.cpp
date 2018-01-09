@@ -155,7 +155,7 @@ bool MultiWorld::init()
 
     //Tworzenie pilki
     ball = Sprite::create("images/objects/Ball.png");
-    ball->setPosition(visibleSize.width/2, visibleSize.height);
+    ball->setPosition(visibleSize.width/2, visibleSize.height/1.3);
     ball->setScale(0.3,0.3);
     auto ballBody = PhysicsBody::createCircle(ball->getContentSize().width/2, PhysicsMaterial(0,1,0));
     ball->setPhysicsBody(ballBody);
@@ -324,7 +324,6 @@ bool MultiWorld::onContactBegin(cocos2d::PhysicsContact &contact)
     {
     }
 
-    //kolizja piłki z bramkami - dodaj punkty na podst helloworldscene
     if((ball->getPositionX() > visibleSize.height/2.3) and ( 4 == c->getCollisionBitmask() && 2 == b->getCollisionBitmask() )
        || ( 2 == c->getCollisionBitmask() && 4 == b->getCollisionBitmask() ) )
     {

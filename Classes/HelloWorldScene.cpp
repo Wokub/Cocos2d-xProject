@@ -156,7 +156,7 @@ bool HelloWorld::init()
 
     //Tworzenie pilki
     ball = Sprite::create("images/objects/Ball.png");
-    ball->setPosition(visibleSize.width/2, visibleSize.height);
+    ball->setPosition(visibleSize.width/2, visibleSize.height/1.3);
     ball->setScale(0.3,0.3);
     auto ballBody = PhysicsBody::createCircle(ball->getContentSize().width/2, PhysicsMaterial(0,1,0));
     ball->setPhysicsBody(ballBody);
