@@ -237,17 +237,17 @@ bool HelloWorld::init()
 
     __String *tempScore = __String::createWithFormat( "%i", firstscore );
 
-    scoreLabel = Label::createWithTTF( tempScore->getCString( ), "fonts/arial.ttf", visibleSize.height * SCORE_FONT_SIZE );
-    scoreLabel->setColor( Color3B::WHITE );
+    scoreLabel = Label::createWithTTF( tempScore->getCString( ), "fonts/Capture_it.ttf", visibleSize.height * SCORE_FONT_SIZE );
+    scoreLabel->setColor( Color3B::BLACK );
     scoreLabel->setPosition( Point(visibleSize.width/2.65,visibleSize.height/1.05));
 
     this->addChild( scoreLabel, 10000 );
 
     __String *secondtempScore = __String::createWithFormat( "%i", secondscore );
 
-    secondscoreLabel = Label::createWithTTF( secondtempScore->getCString( ), "fonts/arial.ttf", visibleSize.height * SCORE_FONT_SIZE );
-    secondscoreLabel->setColor( Color3B::WHITE );
-    secondscoreLabel->setPosition( Point(visibleSize.width/1.65,visibleSize.height/1.05));
+    secondscoreLabel = Label::createWithTTF( secondtempScore->getCString( ), "fonts/Capture_it.ttf", visibleSize.height * SCORE_FONT_SIZE );
+    secondscoreLabel->setColor( Color3B::BLACK );
+    secondscoreLabel->setPosition( Point(visibleSize.width/1.6,visibleSize.height/1.05));
 
     this->addChild( secondscoreLabel, 10000 );
 
@@ -355,17 +355,23 @@ bool HelloWorld::onContactBegin(cocos2d::PhysicsContact &contact)
         __String *secondtempScore = __String::createWithFormat( "%i", secondscore );
 
         secondscoreLabel->setString( secondtempScore->getCString( ));
+
+        auto anim = Place::create(Point(visibleSize.width/2, visibleSize.height));
+        ball->runAction(anim);
     }
 
     if((ball->getPositionX() > visibleSize.height/2.3) and ( 5 == c->getCollisionBitmask() && 2 == b->getCollisionBitmask() )
        || ( 2 == c->getCollisionBitmask() && 5 == b->getCollisionBitmask() ) )
     {
-        ball->setPosition(visibleSize.width/2, visibleSize.height);
         firstscore++;
 
         __String *tempScore = __String::createWithFormat( "%i", firstscore );
 
         scoreLabel->setString( tempScore->getCString( ));
+
+        auto anim = Place::create(Point(visibleSize.width/2, visibleSize.height));
+        ball->runAction(anim);
+
     }
 
     return true;
