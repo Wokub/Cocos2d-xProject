@@ -12,7 +12,7 @@ Scene* MultiWorld::createScene()
     //Poniższą linijkę można wyłączyć dodając ją jako komentarz. Jest ona odpowiedzialna za wyrysowanie kolizji
     //scene->getPhysicsWorld()->setDebugDrawMask(PhysicsWorld::DEBUGDRAW_ALL);//wyrysowanie, daj jako komentarz jesli chcesz usunac czerwona otoczke
 
-    scene->getPhysicsWorld()->setGravity(Vect(0,-420));//Vect(20,20) np., daj (0,0) zeby wylaczyc latanie do gory pilki
+    scene->getPhysicsWorld()->setGravity(Vect(0,-320));//Vect(20,20) np., daj (0,0) zeby wylaczyc latanie do gory pilki
 
     auto layer = MultiWorld::create();
     layer->SetPhysicsWorld(scene->getPhysicsWorld());
@@ -245,6 +245,10 @@ bool MultiWorld::init()
     CocosDenshion::SimpleAudioEngine::getInstance()->preloadBackgroundMusic("audio/MainTheme.mp3");
     CocosDenshion::SimpleAudioEngine::getInstance()->playBackgroundMusic("audio/MainTheme.mp3", true);
 
+    CocosDenshion::SimpleAudioEngine::getInstance()->setEffectsVolume(0.8);
+    CocosDenshion::SimpleAudioEngine::getInstance()->preloadEffect("audio/SeagullsWave.mp3");
+    CocosDenshion::SimpleAudioEngine::getInstance()->playEffect("audio/SeagullsWave.mp3", true);
+
     //Zmienne odpowiedzialne za sprawdzanie czy nastąpił kontakt, tj. kolizja
     //Kreator
     auto contactListener = EventListenerPhysicsContact::create();
@@ -265,6 +269,9 @@ void MultiWorld::menuJumpCallback(Ref* pSender)
 
     auto action = JumpBy::create(1, Point(0,0),100,1);//Akcja odpowiedzialna za skok
     character->runAction(action);//Wywołanie akcji
+
+    CocosDenshion::SimpleAudioEngine::getInstance()->preloadEffect("audio/Jump.wav");
+    CocosDenshion::SimpleAudioEngine::getInstance()->playEffect("audio/Jump.wav", false);
 }
 
 //Funkcja wprawiająca postać w ruch po wciśnięciu prawego przycisku
@@ -336,6 +343,9 @@ bool MultiWorld::onContactBegin(cocos2d::PhysicsContact &contact)
 
         auto anim = Place::create(Point(visibleSize.width/2, visibleSize.height));
         ball->runAction(anim);
+
+        CocosDenshion::SimpleAudioEngine::getInstance()->preloadEffect("audio/Boo.wav");
+        CocosDenshion::SimpleAudioEngine::getInstance()->playEffect("audio/Boo.wav", false);
     }
 
     if((ball->getPositionX() > visibleSize.height/2.3) and ( 5 == c->getCollisionBitmask() && 2 == b->getCollisionBitmask() )
@@ -350,6 +360,9 @@ bool MultiWorld::onContactBegin(cocos2d::PhysicsContact &contact)
 
         auto anim = Place::create(Point(visibleSize.width/2, visibleSize.height));
         ball->runAction(anim);
+
+        CocosDenshion::SimpleAudioEngine::getInstance()->preloadEffect("audio/Cheer.wav");
+        CocosDenshion::SimpleAudioEngine::getInstance()->playEffect("audio/Cheer.wav", false);
     }
 
     return true;
