@@ -293,16 +293,11 @@ bool MultiWorld::onContactBegin(cocos2d::PhysicsContact &contact)
     PhysicsBody *d = contact.getShapeA()->getBody();
     PhysicsBody *e = contact.getShapeA()->getBody();
 
-
-    int firstplayerscore = 0;
-    int secondplayerscore = 0;
-
     //Warunek na kolizję piłki i pierwszego gracza, możliwe, że będzie trzeba usunąć
     //(ball->getPositionX() > visibleSize.height/2.3)
     if ((ball->getPositionX() > visibleSize.height/2.3) and ( 1 == a->getCollisionBitmask() && 2 == b->getCollisionBitmask() )
          || ( 2 == a->getCollisionBitmask() && 1 == b->getCollisionBitmask() ) )
     {
-        int *firstpscore = &firstplayerscore;
         auto ballStartingAnimation = JumpBy::create(2, Point(150, 0), 50, 3);//Tworzenie zmiennej zawierającej animację skoku piłki
         ball->runAction(ballStartingAnimation);//Wywołanie animacji
     }
@@ -319,31 +314,18 @@ bool MultiWorld::onContactBegin(cocos2d::PhysicsContact &contact)
         ball->runAction(ballStartingAnimation);//Wywołanie animacji
     }
 
+    //kolizja piłki z bramkami - dodaj punkty na podst helloworldscene
     if((ball->getPositionX() > visibleSize.height/2.3) and ( 4 == c->getCollisionBitmask() && 2 == b->getCollisionBitmask() )
        || ( 2 == c->getCollisionBitmask() && 4 == b->getCollisionBitmask() ) )
     {
         ball->setPosition(visibleSize.width/2, visibleSize.height/2.3);
-        secondplayerscore += 1;
     }
 
     if((ball->getPositionX() > visibleSize.height/2.3) and ( 5 == c->getCollisionBitmask() && 2 == b->getCollisionBitmask() )
        || ( 2 == c->getCollisionBitmask() && 5 == b->getCollisionBitmask() ) )
     {
         ball->setPosition(visibleSize.width/2, visibleSize.height/2.3);
-        secondplayerscore += 1;
     }
-
-    __String *firstscore = __String::createWithFormat("%i", firstplayerscore);
-    auto firstScoreLabel = Label::createWithTTF(firstscore->getCString(), "fonts/arial.ttf", 32.0f);
-    firstScoreLabel->setColor(Color3B::WHITE);
-    firstScoreLabel->setPosition(visibleSize.width/2.65,visibleSize.height/1.05);
-    this->addChild(firstScoreLabel, 10000);
-
-    __String *secondscore = __String::createWithFormat("%i", secondplayerscore);
-    auto secondScoreLabel = Label::createWithTTF(secondscore->getCString(), "fonts/arial.ttf", 32.0f);
-    secondScoreLabel->setColor(Color3B::WHITE);
-    secondScoreLabel->setPosition(visibleSize.width/1.65,visibleSize.height/1.05);
-    this->addChild(secondScoreLabel, 10000);
 
     /////////
     //Dodaj warunek sprawiający, że piłka nie może spać poniżej mostu

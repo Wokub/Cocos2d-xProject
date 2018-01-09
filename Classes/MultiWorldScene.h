@@ -32,6 +32,11 @@ public:
     bool onContactBegin(cocos2d::PhysicsContact &contact);
 
     bool onTouchBegan(cocos2d::Touch *touch, cocos2d::Event *event);
+    unsigned int firstscore;
+    unsigned int secondscore;
+
+    cocos2d::Label *scoreLabel;
+    cocos2d::Label *secondscoreLabel;
 
     //tworzenie glownej funkcji
     CREATE_FUNC(MultiWorld);

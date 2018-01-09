@@ -1,6 +1,7 @@
 #ifndef __DEFINITIONS_H__
 #define __DEFINITIONS_H__
 
+#define SCORE_FONT_SIZE 0.1
 #define OBSTACLE_COLLISION_BITMASK 0x000002
 
 #endif // __DEFINITIONS_H__
