@@ -10,9 +10,9 @@ Scene* MultiWorld::createScene()
 {
     auto scene = Scene::createWithPhysics();
     //Poniższą linijkę można wyłączyć dodając ją jako komentarz. Jest ona odpowiedzialna za wyrysowanie kolizji
-    scene->getPhysicsWorld()->setDebugDrawMask(PhysicsWorld::DEBUGDRAW_ALL);//wyrysowanie, daj jako komentarz jesli chcesz usunac czerwona otoczke
+    //scene->getPhysicsWorld()->setDebugDrawMask(PhysicsWorld::DEBUGDRAW_ALL);//wyrysowanie, daj jako komentarz jesli chcesz usunac czerwona otoczke
 
-    scene->getPhysicsWorld()->setGravity(Vect(0,0));//Vect(20,20) np., daj (0,0) zeby wylaczyc latanie do gory pilki
+    scene->getPhysicsWorld()->setGravity(Vect(0,-420));//Vect(20,20) np., daj (0,0) zeby wylaczyc latanie do gory pilki
 
     auto layer = MultiWorld::create();
     layer->SetPhysicsWorld(scene->getPhysicsWorld());
@@ -155,7 +155,7 @@ bool MultiWorld::init()
 
     //Tworzenie pilki
     ball = Sprite::create("images/objects/Ball.png");
-    ball->setPosition(visibleSize.width/2, visibleSize.height/2.3);
+    ball->setPosition(visibleSize.width/2, visibleSize.height);
     ball->setScale(0.3,0.3);
     auto ballBody = PhysicsBody::createCircle(ball->getContentSize().width/2, PhysicsMaterial(0,1,0));
     ball->setPhysicsBody(ballBody);
@@ -163,9 +163,6 @@ bool MultiWorld::init()
     ballBody->setContactTestBitmask(true);
 
     this->addChild(ball);
-
-    auto ballStartingAnimation = JumpBy::create(1, Point(0,0),50,1);
-    ball->runAction(ballStartingAnimation);
 
     if(ball->getPosition().y < visibleSize.width/2 )
     {
@@ -224,6 +221,25 @@ bool MultiWorld::init()
     bridgeBody->setDynamic(false);
     bridge->setPhysicsBody(bridgeBody);
     this->addChild(bridge);
+
+    firstscore = 0;
+    secondscore = 0;
+
+    __String *tempScore = __String::createWithFormat( "%i", firstscore );
+
+    scoreLabel = Label::createWithTTF( tempScore->getCString( ), "fonts/arial.ttf", visibleSize.height * SCORE_FONT_SIZE );
+    scoreLabel->setColor( Color3B::WHITE );
+    scoreLabel->setPosition( Point(visibleSize.width/2.65,visibleSize.height/1.05));
+
+    this->addChild( scoreLabel, 10000 );
+
+    __String *secondtempScore = __String::createWithFormat( "%i", secondscore );
+
+    secondscoreLabel = Label::createWithTTF( secondtempScore->getCString( ), "fonts/arial.ttf", visibleSize.height * SCORE_FONT_SIZE );
+    secondscoreLabel->setColor( Color3B::WHITE );
+    secondscoreLabel->setPosition( Point(visibleSize.width/1.65,visibleSize.height/1.05));
+
+    this->addChild( secondscoreLabel, 10000 );
 
     //Wywołanie efektów audio
     CocosDenshion::SimpleAudioEngine::getInstance()->preloadBackgroundMusic("audio/MainTheme.mp3");
@@ -298,37 +314,38 @@ bool MultiWorld::onContactBegin(cocos2d::PhysicsContact &contact)
     if ((ball->getPositionX() > visibleSize.height/2.3) and ( 1 == a->getCollisionBitmask() && 2 == b->getCollisionBitmask() )
          || ( 2 == a->getCollisionBitmask() && 1 == b->getCollisionBitmask() ) )
     {
-        auto ballStartingAnimation = JumpBy::create(2, Point(150, 0), 50, 3);//Tworzenie zmiennej zawierającej animację skoku piłki
-        ball->runAction(ballStartingAnimation);//Wywołanie animacji
     }
 
 
     //Warunek na kolizję piłki i przeciwnika, możesz spróbować z pierwszym warunkiem if-a
-    if((ball->getPositionX() > visibleSize.height/2.3) and ( 3 == c->getCollisionBitmask() && 2 == b->getCollisionBitmask() )
+    if((ball->getPositionX() > visibleSize.height/2.3) and ( 3 == c->getCollisionBitmask()
+                                                             && 2 == b->getCollisionBitmask() )
        || ( 2 == c->getCollisionBitmask() && 3 == b->getCollisionBitmask() ) )
     {
-        auto ballStartingAnimation = JumpTo::create(2, Point(-450, visibleSize.height/2.3 - 20 ),
-                                                    50, 3);//Tworzenie skoku, spróbuj zmanipulować
-        // to visibleSize - 20. Liczba ustala w którym miejscu ma się odnowić piłka, możliwe,
-        //że zastąpi nam to warunek na przenikanie piłki przez most
-        ball->runAction(ballStartingAnimation);//Wywołanie animacji
     }
 
     //kolizja piłki z bramkami - dodaj punkty na podst helloworldscene
     if((ball->getPositionX() > visibleSize.height/2.3) and ( 4 == c->getCollisionBitmask() && 2 == b->getCollisionBitmask() )
        || ( 2 == c->getCollisionBitmask() && 4 == b->getCollisionBitmask() ) )
     {
-        ball->setPosition(visibleSize.width/2, visibleSize.height/2.3);
+        ball->setPosition(visibleSize.width/2, visibleSize.height);
+        secondscore++;
+
+        __String *secondtempScore = __String::createWithFormat( "%i", secondscore );
+
+        secondscoreLabel->setString( secondtempScore->getCString( ));
     }
 
     if((ball->getPositionX() > visibleSize.height/2.3) and ( 5 == c->getCollisionBitmask() && 2 == b->getCollisionBitmask() )
        || ( 2 == c->getCollisionBitmask() && 5 == b->getCollisionBitmask() ) )
     {
-        ball->setPosition(visibleSize.width/2, visibleSize.height/2.3);
-    }
+        ball->setPosition(visibleSize.width/2, visibleSize.height);
+        firstscore++;
 
-    /////////
-    //Dodaj warunek sprawiający, że piłka nie może spać poniżej mostu
+        __String *tempScore = __String::createWithFormat( "%i", firstscore );
+
+        scoreLabel->setString( tempScore->getCString( ));
+    }
 
     return true;
 }
