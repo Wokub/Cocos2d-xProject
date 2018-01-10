@@ -362,7 +362,7 @@ bool HelloWorld::onContactBegin(cocos2d::PhysicsContact &contact)
 
         secondscoreLabel->setString( secondtempScore->getCString( ));
 
-        auto anim = Place::create(Point(visibleSize.width/2, visibleSize.height));
+        auto anim = Place::create(Point(visibleSize.width/2, visibleSize.height/1.2));
         ball->runAction(anim);
 
         CocosDenshion::SimpleAudioEngine::getInstance()->preloadEffect("audio/Boo.wav");
@@ -378,7 +378,7 @@ bool HelloWorld::onContactBegin(cocos2d::PhysicsContact &contact)
 
         scoreLabel->setString( tempScore->getCString( ));
 
-        auto anim = Place::create(Point(visibleSize.width/2, visibleSize.height));
+        auto anim = Place::create(Point(visibleSize.width/2, visibleSize.height/1.2));
         ball->runAction(anim);
 
         CocosDenshion::SimpleAudioEngine::getInstance()->preloadEffect("audio/Cheer.wav");

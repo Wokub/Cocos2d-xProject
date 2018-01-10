@@ -12,9 +12,10 @@ public:
 
     void SceneCallback(cocos2d::Ref *pSender);
     void SceneCallbackTwo(cocos2d::Ref *pSender);
+    void HelpCallback(cocos2d::Ref *pSender);
 
     void multiplayer(Ref *pSender);
-    void inform(Ref *pSender);
+
 
     cocos2d::Sprite *logo;
 

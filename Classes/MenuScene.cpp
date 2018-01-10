@@ -62,9 +62,11 @@ bool MenuScene::init()
     logo->runAction(EaseElasticIn::create(action));
 
     auto menu_item_single = MenuItemFont::create("Singleplayer", CC_CALLBACK_1(MenuScene::SceneCallback, this));
-    menu_item_single->setPosition(Point(visibleSize.width/2, (visibleSize.height/4)*2.5));
+    menu_item_single->setPosition(Point(visibleSize.width/2, (visibleSize.height/4)*3));
     auto menu_item_second = MenuItemFont::create("Multiplayer", CC_CALLBACK_1(MenuScene::SceneCallbackTwo, this));
-    menu_item_second->setPosition(Point(visibleSize.width/2, (visibleSize.height/4)*1.5));
+    menu_item_second->setPosition(Point(visibleSize.width/2, (visibleSize.height/4)*2.2));
+    auto menu_item_third = MenuItemFont::create("Help", CC_CALLBACK_1(MenuScene::SceneCallbackTwo, this));
+    menu_item_third->setPosition(Point(visibleSize.width/2, (visibleSize.height/4)*1.4));
 
     auto *menu = Menu::create(menu_item_single, NULL);
     menu->setPosition(Point(0,0));
@@ -73,6 +75,10 @@ bool MenuScene::init()
     auto *menu_2 = Menu::create(menu_item_second, NULL);
     menu_2->setPosition(Point(0,0));
     this->addChild(menu_2);
+
+    auto *menu_3 = Menu::create(menu_item_third, NULL);
+    menu_3->setPosition(Point(0,0));
+    this->addChild(menu_3);
 
     CocosDenshion::SimpleAudioEngine::getInstance()->preloadBackgroundMusic("audio/MenuTheme.mp3");
     CocosDenshion::SimpleAudioEngine::getInstance()->playBackgroundMusic("audio/MenuTheme.mp3", true);
