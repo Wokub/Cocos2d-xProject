@@ -2,6 +2,7 @@
 #include "SimpleAudioEngine.h"
 #include "Definitions.h"
 #include <iostream>
+#include "GameOverScene.h"
 
 USING_NS_CC;
 
@@ -365,6 +366,12 @@ bool HelloWorld::onContactBegin(cocos2d::PhysicsContact &contact)
         auto anim = Place::create(Point(visibleSize.width/2, visibleSize.height/1.2));
         ball->runAction(anim);
 
+        if(secondscore == 10)
+        {
+            auto scene = GameOverScene::createScene();
+            Director::getInstance()->replaceScene(TransitionFade::create (TRANSITION_TIME, scene));
+        }
+
         CocosDenshion::SimpleAudioEngine::getInstance()->preloadEffect("audio/Boo.wav");
         CocosDenshion::SimpleAudioEngine::getInstance()->playEffect("audio/Boo.wav", false);
     }
@@ -380,6 +387,12 @@ bool HelloWorld::onContactBegin(cocos2d::PhysicsContact &contact)
 
         auto anim = Place::create(Point(visibleSize.width/2, visibleSize.height/1.2));
         ball->runAction(anim);
+
+        if(firstscore == 10)
+        {
+            auto scene = GameOverScene::createScene();
+            Director::getInstance()->replaceScene(TransitionFade::create (TRANSITION_TIME, scene));
+        }
 
         CocosDenshion::SimpleAudioEngine::getInstance()->preloadEffect("audio/Cheer.wav");
         CocosDenshion::SimpleAudioEngine::getInstance()->playEffect("audio/Cheer.wav", false);

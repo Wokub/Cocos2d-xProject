@@ -4,6 +4,7 @@
 #include "SimpleAudioEngine.h"
 #include "AppDelegate.h"
 #include "cocos2d.h"
+#include "GameOverScene.h"
 
 #include <iostream>
 
@@ -53,35 +54,21 @@ bool HelpScene::init()
     auto visibleSize = Director::getInstance()->getVisibleSize();
     Vec2 origin = Director::getInstance()->getVisibleOrigin();
 
-    //Tworzenie przycisku skoku
-    auto closeItem = MenuItemImage::create(
-                    "images/buttons/Exit_Button.png",
-                    "images/buttons/Button_Jump2.png",
-                    CC_CALLBACK_1(HelpScene::BackCallback, this)
-           // , CC_CALLBACK_0(HelloWorld::JumpSoundEffect, this)
-    );
 
-    if (closeItem == nullptr ||
-        closeItem->getContentSize().width <= 0 ||
-        closeItem->getContentSize().height <= 0)
-    {
-        problemLoading("'Button_Jump.png' and 'Button_Jump2.png'");
-    }
-    else
-    {
-        float x = origin.x + visibleSize.width/1.2;
-        float y = origin.y + closeItem->getContentSize().height/2;
-        closeItem->setPosition(Vec2(x,y));
-    }
+//Tworzenie prawego przycisku
+    auto back = MenuItemImage::create(
+            "images/buttons/menu.png",
+            "images/buttons/menuclicked.png",
+            CC_CALLBACK_1(GameOverScene::GoToMainMenuScene, this));
 
+    back->setPosition( Point( visibleSize.width / 2 + origin.x, visibleSize.height / 4 * 3.5 ) );
     //Tworzenie "menu", tj. miejsca pod przycisk
-    auto menu = Menu::create(closeItem, NULL);
-    menu->setPosition(Vec2::ZERO);
-    this->addChild(menu, 1);
-
+    auto menu_2 = Menu::create(back, NULL);
+    menu_2->setPosition(Vec2::ZERO);
+    this->addChild(menu_2, 1);
 
     //Tworzenie tla
-    auto bg = Sprite::create("images/background/background.jpg");
+    auto bg = Sprite::create("images/background/Pirates_BG.jpg");
     bg->setPosition(Vec2(origin.x + visibleSize.width / 2, origin.y + visibleSize.height / 2));
     bg->setScale(0.55, 0.55);
     this->addChild(bg);
