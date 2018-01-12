@@ -10,13 +10,16 @@ public:
 
     //funkcja inicjalizujaca bool
     virtual bool init();
+
     void BackCallback(cocos2d::Ref *pSender);
+
     //tworzenie psychiki
     cocos2d::PhysicsWorld *sceneWorld;
 
     //tworzenie glownej funkcji
     CREATE_FUNC(HelpScene);
+
+    void GoToMainMenuScene(cocos2d::Ref *sender);
+
 };
-
-
 #endif // __HELP_SCENE_H__

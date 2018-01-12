@@ -17,7 +17,8 @@ LOCAL_SRC_FILES := $(LOCAL_PATH)/hellocpp/main.cpp \
 				   $(LOCAL_PATH)/../../../Classes/HelloWorldScene.cpp \
 				   $(LOCAL_PATH)/../../../Classes/MultiWorldScene.cpp \
 				   $(LOCAL_PATH)/../../../Classes/GameOverScene.cpp \
-				   
+				   $(LOCAL_PATH)/../../../Classes/HelpScene.cpp \
+
 LOCAL_C_INCLUDES := $(LOCAL_PATH)/../../../Classes
 
 # _COCOS_HEADER_ANDROID_BEGIN

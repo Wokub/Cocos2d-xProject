@@ -14,9 +14,6 @@ public:
     void SceneCallbackTwo(cocos2d::Ref *pSender);
     void HelpCallback(cocos2d::Ref *pSender);
 
-    void multiplayer(Ref *pSender);
-
-
     cocos2d::Sprite *logo;
 
     //tworzenie glownej funkcji
