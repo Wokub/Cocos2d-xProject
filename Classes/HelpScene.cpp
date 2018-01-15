@@ -41,9 +41,9 @@ bool HelpScene::init()
     auto visibleSize = Director::getInstance()->getVisibleSize();
     Vec2 origin = Director::getInstance()->getVisibleOrigin();
 
-    auto backgroundSprite = Sprite::create("images/background/End_BG.jpg");
+    auto backgroundSprite = Sprite::create("images/background/Help_BG.jpg");
     backgroundSprite->setPosition( Point( visibleSize.width / 2 + origin.x, visibleSize.height / 2 + origin.y ) );
-    backgroundSprite->setScale(0.7, 0.7);
+    //backgroundSprite->setScale(0.7, 0.7);
     this->addChild( backgroundSprite );
 
 
@@ -53,11 +53,12 @@ bool HelpScene::init()
             "images/buttons/menuclicked.png",
             CC_CALLBACK_1(HelpScene::GoToMainMenuScene, this));
 
-    back->setPosition( Point( visibleSize.width / 2 + origin.x, visibleSize.height / 4 * 3.5 ) );
+    back->setPosition( Point( visibleSize.width/6,visibleSize.height/3.5 ));
     //Tworzenie "menu", tj. miejsca pod przycisk
     auto menu_2 = Menu::create(back, NULL);
     menu_2->setPosition(Vec2::ZERO);
     this->addChild(menu_2, 1);
+
 
     //Audio
     CocosDenshion::SimpleAudioEngine::getInstance()->preloadBackgroundMusic("audio/MenuTheme.mp3");

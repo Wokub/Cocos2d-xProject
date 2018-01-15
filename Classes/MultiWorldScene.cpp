@@ -194,9 +194,9 @@ bool MultiWorld::init()
     characterBody->setContactTestBitmask(true);
     this->addChild(character);
 
-    goalone = Sprite::create("images/objects/Goal.png");
-    goalone->setPosition(Point(visibleSize.width/20.3, visibleSize.height/1.55));
-    goalone->setScale(0.3, 0.4);
+    goalone = Sprite::create("images/objects/Goal2.png");
+    goalone->setPosition(Point(visibleSize.width/20.3, visibleSize.height/1.25));
+    //goalone->setScale(0.3, 0.4);
     auto goaloneBody = PhysicsBody::createBox(goalone->getContentSize(), PhysicsMaterial(0,1,0));
     goaloneBody->setDynamic(false);
     goalone->setPhysicsBody(goaloneBody);
@@ -204,9 +204,9 @@ bool MultiWorld::init()
     goaloneBody->setContactTestBitmask(true);
     this->addChild(goalone);
 
-    goaltwo = Sprite::create("images/objects/Goal2.png");
-    goaltwo->setPosition(Point(visibleSize.width/1.05, visibleSize.height/1.55));
-    goaltwo->setScale(0.3, 0.4);
+    goaltwo = Sprite::create("images/objects/Goal.png");
+    goaltwo->setPosition(Point(visibleSize.width/1.05, visibleSize.height/1.25));
+    //goaltwo->setScale(0.3, 0.4);
     auto goaltwoBody = PhysicsBody::createBox(goaltwo->getContentSize(), PhysicsMaterial(0,1,0));
     goaltwoBody->setDynamic(false);
     goaltwo->setPhysicsBody(goaltwoBody);
@@ -223,8 +223,8 @@ bool MultiWorld::init()
     bridge->setPhysicsBody(bridgeBody);
     this->addChild(bridge);
 
-    firstscore = 0;
-    secondscore = 0;
+    firstscore = 5;
+    secondscore = 5;
 
     __String *tempScore = __String::createWithFormat( "%i", firstscore );
 
@@ -336,16 +336,18 @@ bool MultiWorld::onContactBegin(cocos2d::PhysicsContact &contact)
        || ( 2 == c->getCollisionBitmask() && 4 == b->getCollisionBitmask() ) )
     {
         ball->setPosition(visibleSize.width/2, visibleSize.height);
-        secondscore++;
+        secondscore--;
 
         __String *secondtempScore = __String::createWithFormat( "%i", secondscore );
 
         secondscoreLabel->setString( secondtempScore->getCString( ));
 
+        goalone->setScale(secondscore*0.2, secondscore*0.2);
+
         auto anim = Place::create(Point(visibleSize.width/2, visibleSize.height/1.2));
         ball->runAction(anim);
 
-        if(secondscore == 10)
+        if(secondscore == 0)
         {
             auto scene = GameOverScene::createScene();
             Director::getInstance()->replaceScene(TransitionFade::create (TRANSITION_TIME, scene));
@@ -359,16 +361,18 @@ bool MultiWorld::onContactBegin(cocos2d::PhysicsContact &contact)
        || ( 2 == c->getCollisionBitmask() && 5 == b->getCollisionBitmask() ) )
     {
         ball->setPosition(visibleSize.width/2, visibleSize.height);
-        firstscore++;
+        firstscore--;
 
         __String *tempScore = __String::createWithFormat( "%i", firstscore );
 
         scoreLabel->setString( tempScore->getCString( ));
 
+        goaltwo->setScale(firstscore*0.2, firstscore*0.2);
+
         auto anim = Place::create(Point(visibleSize.width/2, visibleSize.height/1.2));
         ball->runAction(anim);
 
-        if(firstscore == 10)
+        if(firstscore == 0)
         {
             auto scene = GameOverScene::createScene();
             Director::getInstance()->replaceScene(TransitionFade::create (TRANSITION_TIME, scene));

@@ -13,6 +13,7 @@ public:
 
     void BackCallback(cocos2d::Ref *pSender);
 
+    cocos2d::Label *helpLabel;
     //tworzenie psychiki
     cocos2d::PhysicsWorld *sceneWorld;
 
