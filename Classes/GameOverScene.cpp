@@ -2,6 +2,7 @@
 #include "HelloWorldScene.h"
 #include "MenuScene.h"
 #include "Definitions.h"
+#include "MultiWorldScene.h"
 
 USING_NS_CC;
 
@@ -75,7 +76,6 @@ bool GameOverScene::init()
     auto menu_2 = Menu::create(back, NULL);
     menu_2->setPosition(Vec2::ZERO);
     this->addChild(menu_2, 1);
-
 
     return true;
 }

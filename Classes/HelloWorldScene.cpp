@@ -191,6 +191,7 @@ bool HelloWorld::init()
     //Tworzenie gracza
     character = Sprite::create("images/characters/Player.png");
     character->setPosition(Point((visibleSize.width/4.4) + origin.x, visibleSize.height/2));
+
     auto characterBody = PhysicsBody::createBox(character->getContentSize(), PhysicsMaterial(0,1,0));
     characterBody->setDynamic(false);
     character->setScale(0.34, 0.34);

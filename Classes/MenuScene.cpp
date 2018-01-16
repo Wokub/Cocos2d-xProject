@@ -52,7 +52,7 @@ bool MenuScene::init()
     Size visibleSize = Director::getInstance()->getVisibleSize();
     Point origin = Director::getInstance()->getVisibleOrigin();
 
-    auto bg = Sprite::create("images/background/Piratesmenu_BG.jpg");
+    auto bg = Sprite::create("images/background/Menu_BG.jpg");
     bg->setPosition(Vec2(origin.x + visibleSize.width / 2, origin.y + visibleSize.height / 2));
     this->addChild(bg);
 
