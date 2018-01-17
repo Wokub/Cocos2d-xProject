@@ -173,7 +173,7 @@ bool MultiWorld::init()
 
     //Tworzenie obiektu do single_player
     enemy = Sprite::create("images/characters/Player_2.png");
-    enemy->setPosition(visibleSize.width/1.3, visibleSize.height/2);
+    enemy->setPosition(visibleSize.width/1.3, visibleSize.height/2.05);
     enemy->setScale(0.34,0.34);
     auto enemyBody = PhysicsBody::createBox(enemy->getContentSize(), PhysicsMaterial(0,1,0));
     enemyBody->setDynamic(false);
@@ -184,7 +184,7 @@ bool MultiWorld::init()
 
     //Tworzenie gracza
     character = Sprite::create("images/characters/Player.png");
-    character->setPosition(Point((visibleSize.width/4.4) + origin.x, visibleSize.height/2));
+    character->setPosition(Point((visibleSize.width/4.4) + origin.x, visibleSize.height/2.05));
     auto characterBody = PhysicsBody::createBox(character->getContentSize(), PhysicsMaterial(0,1,0));
     characterBody->setDynamic(false);
     character->setScale(0.34, 0.34);
@@ -282,7 +282,7 @@ void MultiWorld::menuRightCallback(Ref* pSender)
     auto visibleSize = Director::getInstance()->getVisibleSize();
     Vec2 origin = Director::getInstance()->getVisibleOrigin();
 
-    auto action = MoveBy::create(1,Point(80,0));//Akcja odpowiedzialna za ruch w prawo
+    auto action = MoveBy::create(1,Point(70,0));//Akcja odpowiedzialna za ruch w prawo
     character->runAction(action);//Wywołanie akcji
 
     //Tymczasowy warunek sprawiający, że odległość na jaką może iść postać w prawo jest ograniczona
@@ -299,7 +299,7 @@ void MultiWorld::menuLeftCallback(Ref* pSender)
     auto visibleSize = Director::getInstance()->getVisibleSize();
     Vec2 origin = Director::getInstance()->getVisibleOrigin();
 
-    auto action = MoveBy::create(1,Point(-80,0));//Akcja odpowiedzialna za ruch w lewo
+    auto action = MoveBy::create(1,Point(-70,0));//Akcja odpowiedzialna za ruch w lewo
     character->runAction(action);//Wywołanie akcji
 }
 
@@ -380,6 +380,49 @@ bool MultiWorld::onContactBegin(cocos2d::PhysicsContact &contact)
 
         CocosDenshion::SimpleAudioEngine::getInstance()->preloadEffect("audio/Cheer.wav");
         CocosDenshion::SimpleAudioEngine::getInstance()->playEffect("audio/Cheer.wav", false);
+    }
+
+
+    if (firstscore == 4)
+    {
+        auto anim = Place::create(Point(visibleSize.width / 1.05, visibleSize.height - 70));
+        goaltwo->runAction(anim);
+    }
+    else if (firstscore == 3)
+    {
+        auto anim = Place::create(Point(visibleSize.width / 1.05, visibleSize.height - 95));
+        goaltwo->runAction(anim);
+    }
+    else if (firstscore == 2)
+    {
+        auto anim = Place::create(Point(visibleSize.width / 1.05, visibleSize.height - 120));
+        goaltwo->runAction(anim);
+    }
+    else if (firstscore == 1)
+    {
+        auto anim = Place::create(Point(visibleSize.width / 1.05, visibleSize.height - 145));
+        goaltwo->runAction(anim);
+    }
+
+    if (secondscore == 4)
+    {
+        auto anim = Place::create(Point(visibleSize.width / 20.3, visibleSize.height - 70));
+        goalone->runAction(anim);
+    }
+    else if (secondscore == 3)
+    {
+        auto anim = Place::create(Point(visibleSize.width / 20.3, visibleSize.height - 95));
+        goalone->runAction(anim);
+    }
+    else if (secondscore == 2)
+    {
+        auto anim = Place::create(Point(visibleSize.width / 20.3, visibleSize.height - 120));
+        goalone->runAction(anim);
+    }
+    else if (secondscore == 1)
+    {
+        auto anim = Place::create(Point(visibleSize.width / 20.3, visibleSize.height - 145));
+        goalone->runAction(anim);
     }
 
     return true;
