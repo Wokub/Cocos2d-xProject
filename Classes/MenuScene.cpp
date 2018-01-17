@@ -65,11 +65,14 @@ bool MenuScene::init()
     logo->runAction(EaseElasticIn::create(action));
 
     auto menu_item_single = MenuItemFont::create("Singleplayer", CC_CALLBACK_1(MenuScene::SceneCallback, this));
-    menu_item_single->setPosition(Point(visibleSize.width/2, (visibleSize.height/4)*3));
+    menu_item_single->setPosition(Point(visibleSize.width/4, (visibleSize.height/4)*3));
+    menu_item_single->setScale(0.8,0.8);
     auto menu_item_second = MenuItemFont::create("Multiplayer", CC_CALLBACK_1(MenuScene::SceneCallbackTwo, this));
-    menu_item_second->setPosition(Point(visibleSize.width/2, (visibleSize.height/4)*2.2));
+    menu_item_second->setPosition(Point(visibleSize.width/4, (visibleSize.height/4)*2.2));
+    menu_item_second->setScale(0.8,0.8);
     auto menu_item_third = MenuItemFont::create("Help", CC_CALLBACK_1(MenuScene::HelpCallback, this));
-    menu_item_third->setPosition(Point(visibleSize.width/2, (visibleSize.height/4)*1.4));
+    menu_item_third->setPosition(Point(visibleSize.width/4, (visibleSize.height/4)*1.4));
+    menu_item_third->setScale(0.8,0.8);
 
     auto *menu = Menu::create(menu_item_single, NULL);
     menu->setPosition(Point(0,0));
