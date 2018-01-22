@@ -244,7 +244,8 @@ bool HelloWorld::init() {
 
     scoreLabel = Label::createWithTTF( tempScore->getCString( ), "fonts/Capture_it.ttf", visibleSize.height * SCORE_FONT_SIZE );
     scoreLabel->setColor( Color3B::BLACK );
-    scoreLabel->setPosition( Point(visibleSize.width/2.65,visibleSize.height/1.05));
+    scoreLabel->setPosition( Point(visibleSize.width/1.6,visibleSize.height/1.05));
+
 
     this->addChild( scoreLabel, 10000 );
 
@@ -252,7 +253,7 @@ bool HelloWorld::init() {
 
     secondscoreLabel = Label::createWithTTF( secondtempScore->getCString( ), "fonts/Capture_it.ttf", visibleSize.height * SCORE_FONT_SIZE );
     secondscoreLabel->setColor( Color3B::BLACK );
-    secondscoreLabel->setPosition( Point(visibleSize.width/1.6,visibleSize.height/1.05));
+    secondscoreLabel->setPosition( Point(visibleSize.width/2.65,visibleSize.height/1.05));
 
     this->addChild( secondscoreLabel, 10000 );
 
