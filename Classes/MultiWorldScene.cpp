@@ -131,7 +131,7 @@ bool MultiWorld::init()
     this->addChild(menu_3, 1);
 
     //Tworzenie tla
-    auto bg = Sprite::create("images/background/Pirates_BG.jpg");
+    auto bg = Sprite::create("images/background/Pirates_BG2.jpg");
     bg->setPosition(Vec2(origin.x + visibleSize.width / 2, origin.y + visibleSize.height / 2));
     bg->setScale(0.7, 0.7);
     this->addChild(bg);
@@ -184,7 +184,7 @@ bool MultiWorld::init()
 
     //Tworzenie gracza
     character = Sprite::create("images/characters/Player.png");
-    character->setPosition(Point((visibleSize.width/4.4) + origin.x, visibleSize.height/2.05));
+    character->setPosition(Point((visibleSize.width/4.4) + origin.x, visibleSize.height/2.02));
     auto characterBody = PhysicsBody::createBox(character->getContentSize(), PhysicsMaterial(0,1,0));
     characterBody->setDynamic(false);
     character->setScale(0.34, 0.34);
@@ -242,6 +242,20 @@ bool MultiWorld::init()
 
     this->addChild( secondscoreLabel, 10000 );
 
+    auto drops = Sprite::create("images/objects/Drops.png");
+    drops->setPosition(Point((visibleSize.width / 2) + origin.x, visibleSize.height-500));
+    drops->setScale(0.4, 0.4);
+    this->addChild(drops);
+
+    auto dropanim = RepeatForever::create(Sequence::create(MoveTo::create(1, Point(visibleSize.width/2,
+                                                                                   visibleSize.height/5)),
+                                                           FadeOut::create(5),
+                                                           MoveTo::create(5,Point(visibleSize.width/2,
+                                                                                  visibleSize.height-500)),
+                                                           FadeIn::create(1), NULL
+    ));
+
+    drops->runAction(dropanim);
     //Wywołanie efektów audio
     CocosDenshion::SimpleAudioEngine::getInstance()->preloadBackgroundMusic("audio/MainTheme.mp3");
     CocosDenshion::SimpleAudioEngine::getInstance()->playBackgroundMusic("audio/MainTheme.mp3", true);
@@ -377,6 +391,7 @@ bool MultiWorld::onContactBegin(cocos2d::PhysicsContact &contact)
             auto scene = GameOverScene::createScene();
             Director::getInstance()->replaceScene(TransitionFade::create (TRANSITION_TIME, scene));
         }
+
 
         CocosDenshion::SimpleAudioEngine::getInstance()->preloadEffect("audio/Cheer.wav");
         CocosDenshion::SimpleAudioEngine::getInstance()->playEffect("audio/Cheer.wav", false);

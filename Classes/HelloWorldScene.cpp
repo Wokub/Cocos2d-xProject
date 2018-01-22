@@ -121,7 +121,7 @@ bool HelloWorld::init() {
     this->addChild(menu_3, 1);
 
     //Tworzenie tla
-    auto bg = Sprite::create("images/background/Pirates_BG.jpg");
+    auto bg = Sprite::create("images/background/Pirates_BG2.jpg");
     bg->setPosition(Vec2(origin.x + visibleSize.width / 2, origin.y + visibleSize.height / 2));
     bg->setScale(0.7, 0.7);
     this->addChild(bg);
@@ -188,7 +188,7 @@ bool HelloWorld::init() {
 
     //Tworzenie gracza
     character = Sprite::create("images/characters/Player.png");
-    character->setPosition(Point((visibleSize.width / 4.4) + origin.x, visibleSize.height / 2.05));
+    character->setPosition(Point((visibleSize.width / 4.4) + origin.x, visibleSize.height / 2.02));
 
     auto characterBody = PhysicsBody::createBox(character->getContentSize(),
                                                 PhysicsMaterial(0, 1, 0));
@@ -243,7 +243,7 @@ bool HelloWorld::init() {
     __String *tempScore = __String::createWithFormat( "%i", firstscore );
 
     scoreLabel = Label::createWithTTF( tempScore->getCString( ), "fonts/Capture_it.ttf", visibleSize.height * SCORE_FONT_SIZE );
-    scoreLabel->setColor( Color3B::BLACK );
+    scoreLabel->setColor( Color3B::WHITE );
     scoreLabel->setPosition( Point(visibleSize.width/1.6,visibleSize.height/1.05));
 
 
@@ -252,13 +252,28 @@ bool HelloWorld::init() {
     __String *secondtempScore = __String::createWithFormat( "%i", secondscore );
 
     secondscoreLabel = Label::createWithTTF( secondtempScore->getCString( ), "fonts/Capture_it.ttf", visibleSize.height * SCORE_FONT_SIZE );
-    secondscoreLabel->setColor( Color3B::BLACK );
+    secondscoreLabel->setColor( Color3B::WHITE );
     secondscoreLabel->setPosition( Point(visibleSize.width/2.65,visibleSize.height/1.05));
 
     this->addChild( secondscoreLabel, 10000 );
 
-    //Wywołanie efektów audio
 
+    auto drops = Sprite::create("images/objects/Drops.png");
+    drops->setPosition(Point((visibleSize.width / 2) + origin.x, visibleSize.height-500));
+    drops->setScale(0.4, 0.4);
+    this->addChild(drops);
+
+    auto dropanim = RepeatForever::create(Sequence::create(MoveTo::create(1, Point(visibleSize.width/2,
+                                                                                   visibleSize.height/5)),
+                                                     FadeOut::create(5),
+                                                     MoveTo::create(5,Point(visibleSize.width/2,
+                                                                             visibleSize.height-500)),
+                                                     FadeIn::create(1), NULL
+                                                     ));
+
+    drops->runAction(dropanim);
+
+//Wywołanie efektów audio
     CocosDenshion::SimpleAudioEngine::getInstance()->preloadBackgroundMusic("audio/MainTheme.mp3");
     CocosDenshion::SimpleAudioEngine::getInstance()->playBackgroundMusic("audio/MainTheme.mp3", true);
 

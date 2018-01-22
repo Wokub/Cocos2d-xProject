@@ -36,9 +36,9 @@ bool GameOverScene::init()
     Size visibleSize = Director::getInstance()->getVisibleSize();
     Vec2 origin = Director::getInstance()->getVisibleOrigin();
 
-    auto backgroundSprite = Sprite::create("images/background/End_BG.jpg");
+    auto backgroundSprite = Sprite::create("images/background/Menu_BG.jpg");
     backgroundSprite->setPosition( Point( visibleSize.width / 2 + origin.x, visibleSize.height / 2 + origin.y ) );
-    backgroundSprite->setScale(0.7, 0.7);
+
     this->addChild( backgroundSprite );
 
     //auto retryItem = MenuItemImage::create( "Retry Button.png", "Retry Button Clicked.png", CC_CALLBACK_1( GameOverScene::GoToGameScene, this ) );
