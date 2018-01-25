@@ -70,6 +70,15 @@ bool MenuScene::init()
     auto menu_item_second = MenuItemFont::create("Multiplayer", CC_CALLBACK_1(MenuScene::SceneCallbackTwo, this));
     menu_item_second->setPosition(Point(visibleSize.width/4, (visibleSize.height/4)*2.2));
     menu_item_second->setScale(0.8,0.8);
+
+    auto alpha = Sprite::create("images/background/Alpha.png");
+    alpha->setPosition(Point(visibleSize.width/2.4, (visibleSize.height/4)*2.05));
+    this->addChild(alpha);
+
+    auto rank = Sprite::create("images/background/Rank.png");
+    rank->setPosition(Point(visibleSize.width*0.55, ((visibleSize.height/4)*1.1)));
+    this->addChild(rank);
+
     auto menu_item_third = MenuItemFont::create("Help", CC_CALLBACK_1(MenuScene::HelpCallback, this));
     menu_item_third->setPosition(Point(visibleSize.width/4, (visibleSize.height/4)*1.4));
     menu_item_third->setScale(0.8,0.8);
@@ -107,7 +116,7 @@ void MenuScene::SceneCallback(Ref* pSender)
     }
 
     // turn on display FPS
-    director->setDisplayStats(true);
+    director->setDisplayStats(false);
 
     // set FPS. the default value is 1.0/60 if you don't call this
     director->setAnimationInterval(1.0f / 60);
@@ -154,7 +163,7 @@ void MenuScene::SceneCallbackTwo(Ref* pSender)
     }
 
     // turn on display FPS
-    director->setDisplayStats(true);
+    director->setDisplayStats(false);
 
     // set FPS. the default value is 1.0/60 if you don't call this
     director->setAnimationInterval(1.0f / 60);
@@ -202,7 +211,7 @@ void MenuScene::HelpCallback(Ref* pSender)
     }
 
     // turn on display FPS
-    director->setDisplayStats(true);
+    director->setDisplayStats(false);
 
     // set FPS. the default value is 1.0/60 if you don't call this
     director->setAnimationInterval(1.0f / 60);

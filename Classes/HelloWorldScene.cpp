@@ -127,19 +127,19 @@ bool HelloWorld::init() {
     this->addChild(bg);
 
     auto water = Sprite::create("images/objects/Water.png");
-    water->setPosition(Vec2(origin.x + visibleSize.width / 2, (visibleSize.height / 5) - 22));
-    water->setScale(1, 0.2);
+    water->setPosition(Vec2(origin.x + visibleSize.width / 2, (visibleSize.height / 4)));
+    water->setScale(1, 1);
     this->addChild(water);
     auto waterAnim = RepeatForever::create(Sequence::create(MoveTo::create(2, Point(origin.x +
                                                                                     visibleSize.width /
                                                                                     2 + 10,
                                                                                     (visibleSize.height /
-                                                                                     5) - 22)),
+                                                                                     4))),
                                                             MoveTo::create(3, Point(origin.x +
                                                                                     visibleSize.width /
                                                                                     2 - 10,
                                                                                     (visibleSize.height /
-                                                                                     5) - 22)),
+                                                                                     4))),
                                                             NULL));//missing sentinel
 
     water->runAction(waterAnim);
@@ -166,7 +166,7 @@ bool HelloWorld::init() {
     this->addChild(ball);
 
     if (ball->getPosition().y < visibleSize.width / 2) {
-        auto ballAnim = RepeatForever::create(RotateBy::create(1, 90));
+        auto ballAnim = RepeatForever::create(RotateBy::create(3, 90));
 
         ball->runAction(ballAnim);
     }
@@ -232,13 +232,22 @@ bool HelloWorld::init() {
     bridgeBody->setDynamic(false);
     bridge->setPhysicsBody(bridgeBody);
 
+    bridgeBody->setCollisionBitmask(7);
+    bridgeBody->setContactTestBitmask(true);
+
     this->addChild(bridge);
 
     firstscore = 5;
     secondscore = 5;
 
-
-
+    /*
+    if(character->getNumberOfRunningActions() == 0) {//regula na pojedynczy skok
+        character->setTexture("images/characters/Player.png");
+    }
+    else if(character->getNumberOfRunningActions() > 0) {//regula na pojedynczy skok
+        character->setTexture("images/characters/SinglePlayer.png");
+    }
+    */
 
     __String *tempScore = __String::createWithFormat( "%i", firstscore );
 
@@ -301,13 +310,15 @@ void HelloWorld::menuJumpCallback(Ref* pSender)
     auto visibleSize = Director::getInstance()->getVisibleSize();
 
     Vec2 origin = Director::getInstance()->getVisibleOrigin();
+    character->setTexture("images/characters/Playeranim.png");
 
-    auto action = JumpBy::create(1, Point(0,0),100,1);//Akcja odpowiedzialna za skok
+    if(character->getNumberOfRunningActions() == 0) {//regula na pojedynczy skok
+        auto action = JumpBy::create(1, Point(0, 0), 100, 1);//Akcja odpowiedzialna za skok
+        character->runAction(EaseInOut::create(action, 2));//Wywołanie akcji
 
-    character->runAction(action);//Wywołanie akcji
-
-    CocosDenshion::SimpleAudioEngine::getInstance()->preloadEffect("audio/Jump.wav");
-    CocosDenshion::SimpleAudioEngine::getInstance()->playEffect("audio/Jump.wav", false);
+        CocosDenshion::SimpleAudioEngine::getInstance()->preloadEffect("audio/Jump.wav");
+        CocosDenshion::SimpleAudioEngine::getInstance()->playEffect("audio/Jump.wav", false);
+    }
 }
 
 //Funkcja wprawiająca postać w ruch po wciśnięciu prawego przycisku
@@ -323,7 +334,7 @@ void HelloWorld::menuRightCallback(Ref* pSender)
     character->runAction(action);//Wywołanie akcji
 
     //Tymczasowy warunek sprawiający, że odległość na jaką może iść postać w prawo jest ograniczona
-   if(character->getPositionX() > visibleSize.width)
+   if(character->getPositionX() > visibleSize.width -25)
    {
     character->setPositionX(visibleSize.width - 25);
    }
@@ -342,7 +353,7 @@ void HelloWorld::menuLeftCallback(Ref* pSender)
     character->runAction(action);//Wywołanie akcji
 }
 
-//Funkcja zawierająca kolizję
+//Funkcja zawierająca kolizję //zaktualizowac na podstawie tego MutliWorldScene
 bool HelloWorld::onContactBegin(cocos2d::PhysicsContact &contact)
 {
     //Zmienne zawierające widoczny rozmiar ekranu oraz "pochodzenie" wywołane lokalnie
@@ -354,8 +365,6 @@ bool HelloWorld::onContactBegin(cocos2d::PhysicsContact &contact)
     PhysicsBody *a = contact.getShapeA()->getBody();
     PhysicsBody *b = contact.getShapeB()->getBody();
     PhysicsBody *c = contact.getShapeA()->getBody();
-    PhysicsBody *d = contact.getShapeA()->getBody();
-    PhysicsBody *e = contact.getShapeA()->getBody();
 
 
     //Warunek na kolizję piłki i pierwszego gracza, możliwe, że będzie trzeba usunąć
@@ -372,6 +381,15 @@ bool HelloWorld::onContactBegin(cocos2d::PhysicsContact &contact)
        || ( 2 == c->getCollisionBitmask() && 3 == b->getCollisionBitmask() ) )
     {
     }
+
+    ///////////////////////
+    if (( 1 == c->getCollisionBitmask() && 7 == b->getCollisionBitmask() )
+    || ( 7 == c->getCollisionBitmask() && 1 == b->getCollisionBitmask() ))
+    {
+    character->setTexture("images/characters/Player.png");
+    }
+
+
 
     if((ball->getPositionX() > visibleSize.height/2.3) and ( 4 == c->getCollisionBitmask() && 2 == b->getCollisionBitmask() )
        || ( 2 == c->getCollisionBitmask() && 4 == b->getCollisionBitmask() ) )

@@ -137,11 +137,21 @@ bool MultiWorld::init()
     this->addChild(bg);
 
     auto water = Sprite::create("images/objects/Water.png");
-    water->setPosition(Vec2(origin.x + visibleSize.width / 2, (visibleSize.height/5)-22));
-    water->setScale(1 , 0.2);
+    water->setPosition(Vec2(origin.x + visibleSize.width / 2, (visibleSize.height / 4)));
+    water->setScale(1, 1);
     this->addChild(water);
-    auto waterAnim = RepeatForever::create(Sequence::create(MoveTo::create(2, Point(origin.x + visibleSize.width/2 + 10, (visibleSize.height/5) - 22)),
-                                      MoveTo::create(3, Point(origin.x + visibleSize.width/2 - 10, (visibleSize.height/5) - 22)), NULL));//missing sentinel
+
+    auto waterAnim = RepeatForever::create(Sequence::create(MoveTo::create(2, Point(origin.x +
+                                                                                    visibleSize.width /
+                                                                                    2 + 10,
+                                                                                    (visibleSize.height /
+                                                                                     4))),
+                                                            MoveTo::create(3, Point(origin.x +
+                                                                                    visibleSize.width /
+                                                                                    2 - 10,
+                                                                                    (visibleSize.height /
+                                                                                     4))),
+                                                            NULL));//missing sentinel
 
     water->runAction(waterAnim);
 
@@ -223,6 +233,9 @@ bool MultiWorld::init()
     bridge->setPhysicsBody(bridgeBody);
     this->addChild(bridge);
 
+    bridgeBody->setCollisionBitmask(7);
+    bridgeBody->setContactTestBitmask(true);
+
     firstscore = 5;
     secondscore = 5;
 
@@ -278,15 +291,18 @@ bool MultiWorld::init()
 //Funkcja wprawiająca postać w skok po wciśnięciu przycisku skoku
 void MultiWorld::menuJumpCallback(Ref* pSender)
 {
-    //Zmienne zawierające widoczny rozmiar ekranu oraz "pochodzenie" wywołane lokalnie
     auto visibleSize = Director::getInstance()->getVisibleSize();
+
     Vec2 origin = Director::getInstance()->getVisibleOrigin();
+    character->setTexture("images/characters/Playeranim.png");
 
-    auto action = JumpBy::create(1, Point(0,0),100,1);//Akcja odpowiedzialna za skok
-    character->runAction(action);//Wywołanie akcji
+    if(character->getNumberOfRunningActions() == 0) {//regula na pojedynczy skok
+        auto action = JumpBy::create(1, Point(0, 0), 100, 1);//Akcja odpowiedzialna za skok
+        character->runAction(EaseInOut::create(action, 2));//Wywołanie akcji
 
-    CocosDenshion::SimpleAudioEngine::getInstance()->preloadEffect("audio/Jump.wav");
-    CocosDenshion::SimpleAudioEngine::getInstance()->playEffect("audio/Jump.wav", false);
+        CocosDenshion::SimpleAudioEngine::getInstance()->preloadEffect("audio/Jump.wav");
+        CocosDenshion::SimpleAudioEngine::getInstance()->playEffect("audio/Jump.wav", false);
+    }
 }
 
 //Funkcja wprawiająca postać w ruch po wciśnięciu prawego przycisku
@@ -369,6 +385,12 @@ bool MultiWorld::onContactBegin(cocos2d::PhysicsContact &contact)
 
         CocosDenshion::SimpleAudioEngine::getInstance()->preloadEffect("audio/Boo.wav");
         CocosDenshion::SimpleAudioEngine::getInstance()->playEffect("audio/Boo.wav", false);
+    }
+
+    if (( 1 == c->getCollisionBitmask() && 7 == b->getCollisionBitmask() )
+        || ( 7 == c->getCollisionBitmask() && 1 == b->getCollisionBitmask() ))
+    {
+        character->setTexture("images/characters/Player.png");
     }
 
     if((ball->getPositionX() > visibleSize.height/2.3) and ( 5 == c->getCollisionBitmask() && 2 == b->getCollisionBitmask() )
